@@ -1,0 +1,14 @@
+enyo.depends(
+	"$lib/extra/analyzer",
+	"$lib/fu",
+	"showdown-v0.9/compressed/showdown.js",
+	"collapsing",
+	"css/app.css",
+	"css/doc.css",
+	"Formatlets.js",
+	"Formatter.js",
+	"Doc.js",
+	"InfoDb.js",
+	"Formatter2.js",
+	"App.js"
+);

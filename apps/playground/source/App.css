@@ -1,0 +1,66 @@
+body {
+	font-family: Prelude Medium, Arial;
+	font-size: 13px;
+	color: #ababab;
+	background-color: #0e0e0e;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
+
+.panel {
+	background-color: #323232;
+	margin: 20px;
+}
+
+.sampler-code-panel {
+	padding: 0 30px;
+}
+
+.sampler-panel {
+	padding: 30px;
+}
+
+.examples-panel {
+	margin-top: 19px;
+	overflow: auto;
+}
+
+.example {
+	padding: 10px 20px;
+	border-top: 1px solid #0e0e0e;
+}
+
+.code, .sampler-code {
+	width: 100%;
+}
+
+.sampler-code {
+	margin-top: 30px;
+}
+
+.pretty-button {
+	position: relative;
+	margin: 2px 8px 2px 1px;
+	padding: 5px 8px 4px 8px;
+	border: 0;
+	-moz-border-radius: .2em;
+	border-radius: .2em;
+	background-color: #484848;
+	color: #ababab;
+	cursor: pointer;
+	-webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.pretty-button:enabled:hover {
+	background-color: #383838;
+}
+
+.pretty-button:enabled:active {
+	top: 1px;
+	left: 1px;
+	-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+}
