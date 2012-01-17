@@ -28,6 +28,9 @@ enyo.kind({
 		if (this.cancel) {
 			enyo.cancelRequestAnimationFrame(this.cancel);
 		}
+		this.loopStart = Date.now();
+		this.frame = 0;
+		this.start = Date.now();
 		this.$.ballpit.destroyClientControls();
 		var colors = [ "green", "blue", "black", "brown", "red", "orange"];
 		var bounce, color, t, l;
@@ -43,9 +46,6 @@ enyo.kind({
 		enyo.asyncMethod(this,"loop");
 	},
 	rendered: function() {
-		this.start = Date.now();
-		this.loopStart = Date.now();
-		this.frame = 0;
 		this.setupBalls();
 	},
 	loop: function() {
