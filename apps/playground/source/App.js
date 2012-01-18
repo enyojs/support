@@ -1,7 +1,7 @@
 ﻿examples = [
 	{
-		description: "Use <code>setAttribute</code> to set DOM attribute.",
-		code: 'this.$.input.setAttribute("value", "fruits");'
+		description: "Use <code>setValue</code> to set the value property.",
+		code: 'this.$.input.setValue("fruits");'
 	},
 	{
 		description: "To set HTML content, use <code>setContent</code>.",
@@ -16,8 +16,8 @@
 		code: 'this.$.button.addClass("pretty-button");'
 	},
 	{
-		description: "To hide/show a control, use <code>setShowing</code>.",
-		code: 'this.$.button.setShowing(false);'
+		description: "To hide/show a control, use show() or hide().",
+		code: 'this.$.button.hide();'
 	},
 	{
 		description: "To create new control, use <code>createComponent</code>.",
@@ -25,11 +25,9 @@
 	}
 ]
 
-samples = [
-	{name: "input", tag: "input"},
-	{tag: "br"},
-	{name: "button", tag: "button", content: "submit"}
-]
+samples = "{name: \"input\", tag: \"input\"},\n" +
+	"{tag: \"br\"},\n" + 
+	"{name: \"button\", tag: \"button\", content: \"submit\"}";
 
 enyo.kind({
 	name: "App",
@@ -59,7 +57,7 @@ enyo.kind({
 		this.$.sampler.createSamples(this.$.samplesCode.hasNode().value);
 	},
 	reset: function() {
-		this.$.samplesCode.hasNode().value = enyo.json.codify.to(samples);
+		this.$.samplesCode.hasNode().value = samples;
 		this.createSamples();
 	},
 	tryIt: function(inSender) {
@@ -75,7 +73,7 @@ enyo.kind({
 	},
 	createSamples: function(inSamplesCode) {
 		this.destroyClientControls();
-		var s = enyo.json.codify.from(inSamplesCode);
+		var s = eval('([' + inSamplesCode + '])');
 		this.createComponents(s);
 		if (this.hasNode()) {
 			this.render();
@@ -111,7 +109,7 @@ enyo.kind({
 		this.$.code.setContent(this.code);
 	},
 	tryItClick: function() {
-		this.code = this.$.code.hasNode().value;
+		this.code = this.$.code.getValue();
 		this.doTryIt();
 	}
 });
