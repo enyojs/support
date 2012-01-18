@@ -1,24 +1,25 @@
 enyo.kind({
 	name: "App",
 	kind: "Control",
-	layoutKind: "VBoxLayout",
 	target: "../../enyo/source",
 	components: [
 		{kind: "Doc", onFinish: "info", onReport: "report"},
 		{name: "db", kind: "InfoDb"},
 		{kind: "Formatter"},
 		{kind: "Formatter2"},
-		{name: "header", height: 50, content: "Enyo API Viewer"},
-		{kind: "HBox", height: "fill", components: [
-			// indices
-			{width: 350, kind: "VBox", components: [
-				{height: 40, kind: "SimpleScroller", classes: "tabbar", style: "overflow: hidden; padding-bottom: 10px; background-color: #fff;", components: [
+		{name: "header", style: "height: 50px", content: "Enyo API Viewer"},
+		{classes: "enyo-fit", style: "top: 50px;", components: [
+			// left panel
+			{classes: "enyo-fit", style: "width: 350px; border-right: 1px dotted silver;", components: [
+				// index tabs
+				{classes: "enyo-fit", kind: "SimpleScroller", classes: "tabbar", style: "overflow: hidden; height: 40px; padding-bottom: 10px; background-color: #fff;", components: [
 					{classes: "active tab", content: "Objects", ontap: "indexSelectorTap"},
 					{classes: "tab", content: "Modules", ontap: "indexSelectorTap"},
 					{classes: "tab", content: "Full Index", ontap: "indexSelectorTap"},
 					{classes: "tab", content: "Search", ontap: "indexSelectorTap"}
 				]},
-				{xkind: "SimpleScroller", height: "fill", style: "overflow: auto;", components: [
+				// indices
+				{classes: "enyo-fit", style: "top: 40px; overflow: auto;", components: [
 					{name: "index", allowHtml: true, style: "padding: 10px; white-space: nowrap"},
 					{name: "search", style: "font-size: 8pt; padding: 8px; background-color: white;", showing: false, components: [
 						{name: "input", kind: "input"}, 
@@ -28,9 +29,9 @@ enyo.kind({
 				]}
 			]},
 			// main
-			{kind: "VBox", width: "fill", components: [
+			{classes: "enyo-fit", style: "left: 350px;", components: [
 				// tabs'n'stuff
-				{height: 92, style: "border-bottom: 1px solid red; box-sizing: border-box;", components: [
+				{classes: "enyo-fit", style: "height: 92px; border-bottom: 1px dotted silver; box-sizing: border-box;", components: [
 					{name: "group", kind: "SimpleScroller", classes: "tabbar", style: "overflow: hidden; padding-bottom: 10px; background-color: #fff;"},
 					{name: "status", content: "Status", style: "background-color: black; color: yellow;", showing: false},
 					{style: "padding: 4px", onchange: "refresh", components: [
@@ -44,24 +45,13 @@ enyo.kind({
 						]}
 					]}
 				]},
-				/*
-				{kind: "VBox", height: 0, showing: false, components: [
-					{name: "search", height: 100, style: "font-size: 8pt; overflow: auto; border-bottom: 2px solid silver; padding: 8px; box-sizing: border-box;", components: [
-						{name: "input", kind: "input"}, {kind: "Button", content: "Search", ontap: "searchTap"},
-						{name: "stuff3"}
-					]},
-					{name: "stuff", height: 200, style: "font-size: 8pt; overflow: auto; border-bottom: 2px solid silver; padding: 8px; box-sizing: border-box;"},
-					{name: "stuff2", height: 300, style: "font-size: 8pt; overflow: auto; border-bottom: 2px solid silver; padding: 8px; box-sizing: border-box;"}
-				]},
-				*/
 				// main docs
-				{xkind: "SimpleScroller", style: "padding: 10px; overflow: auto;", height: "fill", components: [
+				{classes: "enyo-fit", /*kind: "SimpleScroller",*/ style: "padding: 10px; overflow: auto; top: 92px;", components: [
 					{name: "docs2", content: "<b>Loading...</b>", onclick: "docClick", allowHtml: true}
 				]},
-				{xkind: "SimpleScroller", style: "padding: 10px; overflow: auto;", height: 1, showing: false, components: [
+				{classes: "enyo-fit", /*kind: "SimpleScroller",*/ style: "padding: 10px; overflow: auto;", showing: false, components: [
 					{name: "docs", content: "<b>Loading...</b>", onclick: "docClick", allowHtml: true}
 				]}
-				//{width: "fill", name: "docs2", style: "Xfont-size: 8pt; overflow: auto; border-bottom: 2px solid silver; padding: 8px; box-sizing: border-box;"}
 			]}
 		]}
 	],
@@ -70,8 +60,6 @@ enyo.kind({
 		this.addClass("enyo-fit enyo-unselectable");
 		this.selectViewByIndex(0);
 		window.onhashchange = enyo.bind(this, 'hashChange');
-		//enyo.asyncMethod(this.$.doc, "walkEnyo", enyo.path.rewrite(this.target));
-		//this.$.doc.walkEnyo(enyo.path.rewrite("$enyo/source"));
 		this.$.doc.walkEnyo(enyo.path.rewrite(this.target));
 	},
 	report: function(inSender, inAction, inName) {
@@ -80,42 +68,9 @@ enyo.kind({
 	info: function() {
 		this.$.db.dbify(this.$.doc.$.walker.modules);
 		this.propIndex = this.$.db.listAllProperties();
-		/*
-		//
-		this.$.stuff.setContent(""
-			+ "<h2>Kinds:</h2>"
-			+ this.$.db.dumpKinds()
-			+ "<h2>Other:</h2>"
-			+ this.$.db.dumpObjects(this.$.db.objects)
-			+ "<h2>Packages:</h2>"
-			+ this.$.db.dumpPackages()
-			+ "<h2>ALL Properties:</h2>"
-			+ this.$.db.dumpProperties(this.propIndex)
-		);
-		//
-		var k = this.$.db.kinds[3];
-		this.$.stuff2.setContent(""
-			+ "<h1>" + k.name + "</h1>"
-			+ this.$.db.formatKindTree(k)
-			+ this.$.db.dumpProperties(this.$.db.listInheritedProperties(k))
-		);
-		*/
 		//
 		this.renderKindDocs(this.$.db.kinds[3]);
-		/*
-		var p = this.$.db.listInheritedProperties(k);
-		p = this.$.db.filterProperties(p, ["method", "public"]);
-		this.$.stuff4.setContent(""
-			+ "<h1>" + k.name + "</h1>"
-			+ (k.kind ? '<span style="background-color: lightgreen; font-size: small; italic; border-radius: 14px; padding: 3px 6px;">kind</span>' : '<span style="background-color: lightblue; font-size: small; italic; border-radius: 9px; padding: 3px 5px;">object</span>')
-			+ "<h2>Extends</h2>"
-			+ this.$.db.formatKindTree(k)
-			+ "<h2>Properties</h2>"
-			+ this.$.db.dumpProperties(p)
-		);
-		*/
 		//
-		//this.$.toc.setContent(this.$.doc.buildToc());
 		this.$.index.setContent(this.$.doc.buildIndex());
 		this.selectTopic(window.location.hash.slice(1) || "enyo.Component");
 	},
@@ -126,7 +81,6 @@ enyo.kind({
 	},
 	refresh: function() {
 		this.selectTopic(this.topic);
-		//this.showInherited = this.$.inheritedOption.hasNode().checked;
 	},
 	indexSelectorTap: function(inSender) {
 		enyo.forEach(inSender.container.getClientControls(), function(inTab) {
@@ -264,40 +218,6 @@ enyo.kind({
 		this.hasNode().scrollTop = this.y0 - inEvent.dy;
 	}
 });
-
-/*
-enyo.kind({
-	name: "Tabbar",
-	kind: "Control",
-	create: function() {
-		this.inherited(arguments);
-		this.addClass("tabbar");
-	},
-	removeControl: function() {
-		this.inherited(arguments);
-		if (this.hasNode() && this.overflowAmount() <= 0) {
-			this.node.style.left = "0";
-		}
-	},
-	overflowAmount: function() {
-		var n = this.hasNode();
-		return n.clientWidth - n.scrollWidth;
-	},
-	dragstartHandler: function() {
-		this.x0 = this.hasNode().offsetLeft;
-	},
-	dragoverHandler: function(inSender, inEvent) {
-		if (this.hasNode()) {
-			var l = this.x0 + inEvent.dx;
-			var d = this.overflowed();
-			this.node.style.left = Math.min(0, Math.max(l, d)) + "px";
-		}
-	},
-	dragfinishHandler: function(inSender, inEvent) {
-		//inEvent.preventClick();
-	}
-});
-*/
 
 enyo.kind({
 	name: "TopicTab",

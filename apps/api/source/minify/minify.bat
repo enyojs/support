@@ -1,6 +1,6 @@
 REM @ECHO OFF
 
-SET ENYO=..\..\..\..\enyo
+SET ENYO=..\..\..\..\..\enyo
 SET NODE=%ENYO%\tools\node.exe
 SET MINIFY=%ENYO%\tools\minifier\minify.js
 
