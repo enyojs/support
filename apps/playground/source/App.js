@@ -34,13 +34,14 @@ enyo.kind({
 	kind: enyo.Control,
 	components: [
 		{classes: "enyo-fit", style: "right: 520px;", components: [
-			{classes: "enyo-fit panel sampler-code-panel", style: "height: 250px;", components: [
+			{classes: "enyo-fit panel sampler-code-panel", style: "height: 280px;", components: [
+				{classes: "sampler-title", content: "Component block to create:"},
 				{name: "samplesCode", tag: "textarea", attributes: {rows: 10}, classes: "sampler-code"},
 				{tag: "button", content: "Make It", classes: "pretty-button", ontap: "createSamples"},
 				{tag: "button", content: "Reset", classes: "pretty-button", ontap: "reset"}
 			]},
-			{classes: "enyo-fit", style: "top: 250px; height: 20px;"},
-			{kind: "Sampler", classes: "enyo-fit panel sampler-panel", style: "top: 270px;"}
+			{classes: "enyo-fit", style: "top: 280px; height: 20px;"},
+			{kind: "Sampler", classes: "enyo-fit panel sampler-panel", style: "top: 300px;"}
 		]},
 		{classes: "enyo-fit", style: "left: auto; right: 500px; width: 20px;"},
 		{name: "examples", classes: "enyo-fit panel examples-panel", style: "left: auto; width: 500px;", defaultKind: "Example"}
@@ -71,9 +72,13 @@ enyo.kind({
 	evalCode: function(inCode) {
 		eval(inCode);
 	},
+	evalObject: function(inCode) {
+		return eval('(' + inCode + ')')
+	},
 	createSamples: function(inSamplesCode) {
 		this.destroyClientControls();
-		var s = eval('([' + inSamplesCode + '])');
+		var s = this.evalObject(inSamplesCode);
+		s = enyo.isArray(s) ? s : this.evalObject("[" + inSamplesCode + "]");
 		this.createComponents(s);
 		if (this.hasNode()) {
 			this.render();

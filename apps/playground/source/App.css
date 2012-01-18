@@ -34,8 +34,13 @@ body {
 	width: 100%;
 }
 
-.sampler-code {
+.sampler-title {
 	margin-top: 30px;
+	font-size: 15px;
+}
+
+.sampler-code {
+	margin-top: 6px;
 }
 
 .pretty-button {
