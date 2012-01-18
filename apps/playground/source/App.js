@@ -34,19 +34,18 @@ samples = [
 enyo.kind({
 	name: "App",
 	kind: enyo.Control,
-	layoutKind: "HBoxLayout",
 	components: [
-		{layoutKind: "VBoxLayout", flex: 1, components: [
-			{height: 250, classes: "panel sampler-code-panel", components: [
+		{classes: "enyo-fit", style: "right: 520px;", components: [
+			{classes: "enyo-fit panel sampler-code-panel", style: "height: 250px;", components: [
 				{name: "samplesCode", tag: "textarea", attributes: {rows: 10}, classes: "sampler-code"},
 				{tag: "button", content: "Make It", classes: "pretty-button", ontap: "createSamples"},
 				{tag: "button", content: "Reset", classes: "pretty-button", ontap: "reset"}
 			]},
-			{height: 20},
-			{kind: "Sampler", flex: 1, classes: "panel sampler-panel"}
+			{classes: "enyo-fit", style: "top: 250px; height: 20px;"},
+			{kind: "Sampler", classes: "enyo-fit panel sampler-panel", style: "top: 270px;"}
 		]},
-		{width: 20},
-		{name: "examples", width: 500, classes: "panel examples-panel", defaultKind: "Example"}
+		{classes: "enyo-fit", style: "left: auto; right: 500px; width: 20px;"},
+		{name: "examples", classes: "enyo-fit panel examples-panel", style: "left: auto; width: 500px;", defaultKind: "Example"}
 	],
 	create: function() {
 		this.inherited(arguments);
