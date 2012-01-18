@@ -1,36 +1,30 @@
 ﻿enyo.kind({
 	name: "Viewer",
 	kind: "Control",
-	layoutKind: "VBoxLayout",
 	events: {
 		onSearch: "",
 		onSelect: ""
 	},
 	components: [
-		{height: 30, classes: "header"},
-		{flex: 1, layoutKind: "HBoxLayout", components: [
-			{width: 300, components: [
-				{classes: "enyo-fit", layoutKind: "VBoxLayout", components: [
-					{height: 39, layoutKind: "HBoxLayout", components: [
-						{flex: 1, components: [
-							{name: "input", classes: "search-input", tag: "input", attributes: {value: "waterfall"}},
-							{name: "spinner", tag: "img", src: "images/spinner.gif", showing: false, classes: "search-spinner"}
-						]},
-						{width: 39, tag: "img", src: "images/search-button.png", classes: "search-button", ontap: "search"}
-					]},
-					{flex: 1, layoutKind: "VBoxLayout", components: [
-						{name: "results", kind: "SimpleScroller", flex: 1, classes: "list"}
-					]}
-				]}
+		// left panel
+		{classes: "enyo-fit", style: "width: 300px;", components: [
+			// search
+			{classes: "enyo-fit", style: "height: 39px;", components: [
+				{classes: "enyo-fit", style: "right: 39px;", components: [
+					{name: "input", classes: "search-input", tag: "input", attributes: {value: "waterfall"}},
+					{name: "spinner", tag: "img", src: "images/spinner.gif", showing: false, classes: "search-spinner"}
+				]},
+				{classes: "enyo-fit search-button", style: "left: auto; width: 39px;", tag: "img", src: "images/search-button.png", ontap: "search"}
 			]},
-			{flex: 1, components: [
-				{classes: "enyo-fit", layoutKind: "VBoxLayout", components: [
-					{name: "client", flex: 1},
-					{height: 100, layoutKind: "VBoxLayout", components: [
-						{name: "related", kind: "SimpleScroller", classes: "related-list", flex: 1}
-					]}
-				]}
-			]}
+			// list
+			{name: "results", style: "top: 39px;", classes: "enyo-fit simple-scroller list"}
+		]},
+		// main panel
+		{classes: "enyo-fit", style: "left: 300px;", components: [
+			// content
+			{name: "client", classes: "enyo-fit", style: "bottom: 118px;"},
+			// related results
+			{name: "related", style: "top: auto; height: 118px;", classes: "enyo-fit simple-scroller related-list"}
 		]}
 	],
 	search: function() {

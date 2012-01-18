@@ -8,7 +8,7 @@ enyo.kind({
 		onResults: ""
 	},
 	url: "http://query.yahooapis.com/v1/public/yql",
-	pageSize: 20,
+	pageSize: 100,
 	api_key: "2a21b46e58d207e4888e1ece0cb149a5",
 	search: function(inSearchText, inPage) {
 		this.searchText = inSearchText || this.searchText;

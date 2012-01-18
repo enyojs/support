@@ -36,12 +36,13 @@ body {
 }
 
 .simple-scroller {
+	overflow: auto;
 	-webkit-overflow-scrolling: touch;
 }
 
 .list {
 	background: #323232;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 .item {
@@ -56,7 +57,7 @@ body {
 }
 
 .related-list {
-	overflow: hidden;
+	/*overflow: hidden;*/
 	white-space: nowrap;
 }
 
