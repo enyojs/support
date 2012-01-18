@@ -14,7 +14,7 @@
 					{height: 39, layoutKind: "HBoxLayout", components: [
 						{flex: 1, components: [
 							{name: "input", classes: "search-input", tag: "input", attributes: {value: "waterfall"}},
-							{kind: "Spinner", showing: false, classes: "search-spinner"}
+							{name: "spinner", tag: "img", src: "images/spinner.gif", showing: false, classes: "search-spinner"}
 						]},
 						{width: 39, tag: "img", src: "images/search-button.png", classes: "search-button", ontap: "search"}
 					]},

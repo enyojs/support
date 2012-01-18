@@ -6,7 +6,7 @@ enyo.kind({
 	},
 	components: [
 		{name: "image", tag: "img", classes: "enyo-fit center", style: "max-height: 100%;", onload: "imageLoaded", onerror: "imageLoaded"},
-		{name: "spinner", kind: "SpinnerLarge", classes: "enyo-fit center", showing: false}
+		{name: "spinner", tag: "img", src: "images/spinner.gif", classes: "enyo-fit center", showing: false}
 	],
 	create: function() {
 		this.inherited(arguments);

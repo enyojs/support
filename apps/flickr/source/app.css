@@ -8,7 +8,9 @@ body {
 }
 
 .header {
-	background-color: #000;
+	background-color: #222;
+	text-align: center;
+	line-height: 30px;
 }
 
 .search-input {
@@ -20,7 +22,7 @@ body {
 	background-color: #484848;
 	outline: none;
 	font-size: 13px;
-	color: #1a1a1a;
+	color: #ababab;
 }
 
 .search-spinner {

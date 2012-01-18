@@ -1,7 +1,6 @@
 ﻿enyo.depends(
 	"$lib/layout",
 	"$lib/extra/youtube",
-	"$lib/aura/spinner",
 	"source/SimpleScroller.js",
 	"source/Viewer.js",
 	"source/app.css",
