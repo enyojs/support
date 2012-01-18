@@ -36,7 +36,7 @@
 		this.$.results.destroyClientControls();
 		this.results = inResults;
 		for (var i=0,r; r=inResults[i]; i++) {
-			this.$.results.createComponent({content: r.title, classes: "item", 
+			this.$.results.createComponent({content: r.title || "(no labels)", classes: "item", 
 				ontap: "select", data: r, owner: this, attributes: {draggable: false}});
 		}
 		this.$.results.render();
