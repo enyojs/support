@@ -79,6 +79,14 @@ enyo.kind({
 		this.showProtected = this.$.protectedOption.hasNode().checked;
 		this.$.docs2.setContent(this.$.formatter2.formatKind(inKind, this.$.db, this.showInherited, this.showProtected));
 	},
+	renderObjectDocs: function(inObject) {
+		this.showInherited = this.$.inheritedOption.hasNode().checked;
+		this.showProtected = this.$.protectedOption.hasNode().checked;
+		this.$.docs2.setContent(this.$.formatter2.formatObject(inObject, this.$.db, this.showProtected));
+	},
+	renderFunctionDocs: function(inFn) {
+		this.$.docs2.setContent(this.$.formatter2.formatFunction(inFn));
+	},
 	refresh: function() {
 		this.selectTopic(this.topic);
 	},
@@ -157,13 +165,27 @@ enyo.kind({
 		this.topic = inTopic;
 		//
 		// find the topic object
-		var c = Module.topicMap2[inTopic];
-		var n = c.name && c.name.value;
-		var kind = this.$.db.kindByName(n);
+		//var c = Module.topicMap2[inTopic];
+		//var n = c.name && c.name.value;
+		var kind = this.$.db.kindByName(inTopic);
 		if (kind) {
 			this.renderKindDocs(kind);
+		} else {
+			var object = this.$.db.findByName(this.$.db.objects, inTopic);
+			if (object) {
+				this.renderObjectDocs(object);
+			} else {
+				var fn = this.$.db.findByName(this.$.db.functions, inTopic);
+				if (fn) {
+					this.renderFunctionDocs(fn);
+				} else {
+					return;
+				}
+			}
 		}
+		
 		//
+		/*
 		if (inTopic == "toc") {
 			this.selectViewByIndex(0);
 			this.$.docs.setContent(this.$.doc.buildToc());
@@ -191,6 +213,7 @@ enyo.kind({
 				//a.scrollIntoView();
 			}
 		}
+		*/
 		// activate the correct tabs, create a new one
 		var tab = null;
 		enyo.forEach(this.$.group.getClientControls(), function(inC) {

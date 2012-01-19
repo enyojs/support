@@ -22,6 +22,9 @@ enyo.kind({
 		return result;
 	},
 	formatKindProperties: function(inKind, inProperties) {
+	},
+	markupToHtml: function(inMarkup) {
+		return CustomFormatter.showdown.makeHtml(inMarkup || "");
 	}
 });
 
@@ -29,19 +32,6 @@ enyo.kind({
 	name: "Formatter2",
 	kind: CustomFormatter,
 	//
-	/*
-	formatFullIndex: function(inProperties) {
-		var html = '';
-		for (var i=0, p; p=inProperties[i]; i++) {
-			html += ''
-				+ p.name 
-				+ " (" + this.formatLink(p.kind.name) + ")"
-				+ "<br/>"
-				;
-		}
-		return html;
-	},
-	*/
 	formatIndex: function(inProperties) {
 		// collate by first letter 
 		var map = {};
@@ -89,10 +79,12 @@ enyo.kind({
 		var p = !inShowInherited ? inKind.properties : inDb.listInheritedProperties(inKind);
 		var tree = this.formatKindTree(inKind);
 		return ""
-			+ "<h1>" + inKind.name + "</h1>"
-			+ '<span style="background-color: lightgreen; font-size: small; italic; border-radius: 14px; padding: 3px 6px;">kind</span>'
+			//+ "<h1>" + inKind.name + "</h1>"
+			+ '<span class="name">' + inKind.name + '</span>'
+			+ '<span class="type kind-type">kind</span>'
+			+ '<div class="path">' + inKind.module.rawPath + '</div>'
 			+ (tree == '' ? '' : "<h2>Extends</h2>" + tree)
-			+ '<p>' + Formatlets.showdown.makeHtml(inKind.comment) + '</p>'
+			+ '<p>' + this.markupToHtml(inKind.comment) + '</p>'
 			+ "<h2>Properties</h2>"
 			+ this.formatKindProperties(inKind, this.filterProperties(p, ["property"].concat(filter)))
 			//+ this.formatKindProperties(inKind, this.filterProperties(p, ["property"]))
@@ -120,16 +112,26 @@ enyo.kind({
 	},
 	formatKindMethod: function(inKind, p) {
 		return ''
-			+ "<div>"
+			+ '<div style="padding-bottom: 8px;">'
+				/*
 				+ (p.kind == inKind 
 					? (!p.overrides ? '' : '<span style="color:#FF7060; font-size: 70%;">' + this.formatLink(p.overrides.kind.name) + '</span>::')
 					: '<span style="color:#6070FF; font-size: 70%;">' + this.formatLink(p.kind.name) + "</span>::")
+				*/
 				+ (!p.protected ? '' : '<span style="color:#660033">')
 					+ "<b>" + p.name + "</b>"
 				+ (!p.protected ? '' : '</span>')
+
 				+ enyo.macroize(": <Xem>function</Xem>(<code><literal>{$args}</literal></code>)", p)
 				//+ p.name
-				+ (!p.comment ? '' : '<div style="padding-left: 16px">' + CustomFormatter.showdown.makeHtml(p.comment) + '</div>')
+
+				+ (p.kind == inKind 
+					? (!p.overrides ? '' : '<span style="color:#FF7060; font-size: 70%;"> ' + this.formatLink(p.overrides.kind.name) + ' override</span>')
+					: '<span style="color:#6070FF; font-size: 70%;">' + this.formatLink(p.kind.name) + "</span>"
+				)
+
+				+ (!p.comment ? '' : '<div style="padding-left: 16px">' + this.markupToHtml(p.comment) + '</div>')
+
 			+ "</div>"
 			//+ "<br/>"
 			;
@@ -137,14 +139,47 @@ enyo.kind({
 	formatKindProperty: function(inKind, p) {
 		return ''
 			+ "<div>"
-				+ (p.kind == inKind ? '' : '<span style="color:#6070FF; font-size: 70%;">' + this.formatLink(p.kind.name) + "</span>::")
 				+ (!p.protected ? '' : '<span style="color:#660033">')
 					+ "<b>" + p.name + "</b>"
 				+ (!p.protected ? '' : '</span>')
 				+ (!p.property ? '' : ": " + p.value)
-				+ (!p.comment ? '' : '<div style="padding-left: 16px">' + CustomFormatter.showdown.makeHtml(p.comment) + '</div>')
+				+ (!p.kind || (p.kind == inKind) ? '' : '<span style="color:#6070FF; font-size: 70%; padding-left: 8px;">' + this.formatLink(p.kind.name) + "</span >")
+				+ (!p.comment ? '' : '<div style="padding-left: 16px">' + this.markupToHtml(p.comment) + '</div>')
 			+ "</div>"
 			//+ "<br/>"
 			;
+	},
+	//
+	formatObject: function(inObject, inDb, inShowProtected) {
+		var filter = inShowProtected ? [] : ["public"];
+		var p = inObject.properties;
+		return ""
+			//+ "<h1>" + inObject.name + "</h1>"
+			//+ '<span class="type object-type">object</span>'
+
+			+ '<span class="name">' + inObject.name + '</span>'
+			+ '<span class="type object-type">object</span>'
+			+ '<div class="path">' + inObject.module.rawPath + '</div>'
+
+			+ '<p>' + this.markupToHtml(inObject.comment || '') + '</p>'
+			+ "<h2>Properties</h2>"
+			+ this.formatKindProperties(inObject, this.filterProperties(p, ["property"].concat(filter)))
+			+ "<h2>Methods</h2>"
+			+ this.formatKindProperties(inObject, this.filterProperties(p, ["method"].concat(filter)))
+		;
+	},
+	//
+	formatFunction: function(inFn, inDb) {
+		return ""
+			//+ "<h1>" + inFn.name + "</h1>"
+			//+ '<span class="type function-type">function</span>'
+
+			+ '<span class="name">' + inFn.name + '</span>'
+			+ '<span class="type function-type">function</span>'
+			+ '<div class="path">' + inFn.module.rawPath + '</div>'
+
+			+ '<br/><br/>'
+			+ this.formatKindProperty(null, inFn)
+		;
 	}
 });

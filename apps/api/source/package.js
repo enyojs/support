@@ -3,12 +3,13 @@ enyo.depends(
 	"$lib/fu",
 	"showdown-v0.9/compressed/showdown.js",
 	"collapsing",
-	"css/app.css",
-	"css/doc.css",
-	"Formatlets.js",
-	"Formatter.js",
 	"Doc.js",
 	"InfoDb.js",
+	"Formatlets.js",
+	"Formatter.js",
 	"Formatter2.js",
-	"App.js"
+	"App.js",
+	"css/app.css",
+	"css/doc.css",
+	"css/format.css"
 );

@@ -2,7 +2,7 @@ enyo.kind({
 	name: "Formatlets",
 	kind: "Component",
 	statics: {
-		showdown: new Showdown.converter()
+		//showdown: new Showdown.converter()
 	},
 	propertyFormat: "<code>{$name}: <literal>{$value}</literal></code>",
 	methodFormat: "<code>{$name}</code>: <em>function</em>(<code><literal>{$args}</literal></code>)",

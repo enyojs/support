@@ -1,0 +1,29 @@
+.type {
+	background-color: lightgreen;
+	font-size: small;
+	border-radius: 14px;
+	padding: 3px 6px;
+	margin-left: 8px;
+}
+
+.kind-type {
+	background-color: lightgreen;
+}
+
+.object-type {
+	background-color: #FFA01C;
+}
+
+.function-type {
+	background-color: lightblue;
+}
+
+.name {
+	color: #00A400;
+	font-size: 38px;
+	vertical-align: middle;
+}
+
+.path {
+	font-style: italic;
+}

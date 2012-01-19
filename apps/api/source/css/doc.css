@@ -149,26 +149,23 @@ h2:after {
 /**/
 
 code {
-	color: #3b5998;
 	color: #314484;
 	font: normal 86% "Monaco", "Courier New", "Courier";
 }
 
 pre {
 	display: block;
-	background: #f5f6f7;
+	background: #F9FAFB;
 	margin: 1.5em 20px;
 	padding: 10px 1.5em;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	Xwhite-space: pre-wrap;
+	X-webkit-border-radius: 4px;
+	X-moz-border-radius: 4px;
+	border-radius: 12px;
 }
 
 pre code {
-	color: #3b5998;
-	color: #314484;
-	font: normal 86% "Monaco", "Courier New", "Courier";
+	color: #219434;
+	font: 100% "Monaco", "Courier New", "Courier";
 }
 
 a[href] {

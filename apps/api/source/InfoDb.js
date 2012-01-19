@@ -6,15 +6,16 @@ enyo.kind({
 		this.objects = [];
 		this.modules = this.buildModuleList(inReaderModules);
 		this.packages = this.buildPackageList(this.modules);
-		this.indexModules();
+		this.indexModuleObjects();
+		this.processObjects();
 		this.processKinds();
-		this.processInheritance();
 	},
-	hashToArray: function(inHash) {
+	unmap: function(inMap, inFlag) {
 		var results = [];
-		for (var key in inHash) {
-			var elt = inHash[key];
+		for (var key in inMap) {
+			var elt = inMap[key];
 			elt.key = key;
+			elt[inFlag] = true;
 			results.push(elt);
 		}
 		return results;
@@ -22,32 +23,34 @@ enyo.kind({
 	buildModuleList: function(inModuleHash) {
 		//for (var key in inModuleHash) console.log(inModuleHash[key]);
 		// FIXME: should lower level code produce an array directly?
-		return this.hashToArray(inModuleHash);
+		return this.unmap(inModuleHash);
 	},
 	buildPackageList: function(inModules) {
 		var pkgs = {};
 		for (var i=0, m, n, lc, p; m=inModules[i]; i++) {
-			n = (m.package || "unknown");
+			n = (m.packageName || "unknown");
 			lc = n.toLowerCase();
 			if (!pkgs[lc]) {
 				pkgs[lc] = {
-					package: n,
+					packageName: n,
 					modules: []
 				}
 			}
 			p = pkgs[lc];
 			p.modules.push(m);
 		}
-		return this.hashToArray(pkgs);
+		return this.unmap(pkgs);
 	},
-	indexModules: function() {
+	indexModuleObjects: function() {
 		for (var i=0, m; m=this.modules[i]; i++) {
-			this.indexObjects(m.module.objects);
+			this.indexObjects(m);
 		}
 	},
-	indexObjects: function(inObjects) {
-		for (var i=0, o; o=inObjects[i]; i++) {
+	indexObjects: function(inModule) {
+		var o$ = inModule.module.objects;
+		for (var i=0, o; o=o$[i]; i++) {
 			if (o.name && o.type) {
+				o.module = inModule;
 				var n = o.type + 's';
 				if (!this[n]) {
 					this[n] = [];
@@ -56,16 +59,35 @@ enyo.kind({
 			}
 		}
 	},
+	//
+	processObjects: function() {
+		for (var i=0, o; o=this.objects[i]; i++) {
+			this.objects[i] = this.processObject(o);
+		}
+	},
+	processObject: function(o) {
+		// cook raw data
+		var info = {
+			name: o.name,
+			comment: o.comment,
+			module: o.module,
+			object: true
+		};
+		info.properties = this.listKindProperties(o, info);
+		return info;
+	},
+	//
 	processKinds: function() {
 		for (var i=0, k; k=this.kinds[i]; i++) {
 			this.kinds[i] = this.processKind(k);
 		}
 	},
 	processKind: function(k) {
-		// transmute raw data into kind-specific info
+		// cook raw data
 		var info = {
 			name: k.name.value,
 			comment: k.comment,
+			module: k.module,
 			kind: true,
 			superkinds: this.listSuperkinds(k)
 		};
@@ -96,23 +118,13 @@ enyo.kind({
 		return supers;
 	},
 	listKindProperties: function(inKind, inInfo) {
-		var unmap = function(inMap, inFlag) {
-			var result = [];
-			for (var n in inMap) {
-				var e = inMap[n];
-				e[inFlag] = true;
-				result.push(e);
-			}
-			return result;
-		};
-		//
 		// copy methods
-		var props = unmap(inKind.methods.map, "method");
+		var props = this.unmap(inKind.methods.map, "method");
 		// copy non-method properties
-		props = props.concat(unmap(inKind.properties.map, "property"));
+		props = props.concat(this.unmap(inKind.properties.map, "property"));
 		// copy published properties
 		if (inKind.published && inKind.published.value.properties) {
-			props = props.concat(unmap(inKind.published.value.properties.map, "published"));
+			props = props.concat(this.unmap(inKind.published.value.properties.map, "published"));
 		}
 		for (var i=0, p; p=props[i]; i++) {
 			// convert group id to flag
@@ -120,14 +132,8 @@ enyo.kind({
 			// refer each property record back to the kind info it came from (for tracking overrides)
 			p.kind = inInfo;
 		}
+		props.sort(this.nameCompare);
 		return props;
-	},
-	processInheritance: function() {
-		/*
-		for (var i=0, k; k=this.kinds[i]; i++) {
-			this.mergeInheritedProperties(k);
-		}
-		*/
 	},
 	nameCompare: function(inA, inB) {
 		if (inA.name < inB.name) {
@@ -195,7 +201,7 @@ enyo.kind({
 	dumpPackages: function() {
 		var html = '';
 		for (var i=0, p; p=this.packages[i]; i++) {
-			html += p.package + "<br/>";
+			html += p.packageName + "<br/>";
 			for (var j=0, m; m=p.modules[j]; j++) {
 				html += "&nbsp;&nbsp;&nbsp;&nbsp;" + m.rawPath + "<br/>";
 			}
@@ -205,17 +211,20 @@ enyo.kind({
 	dumpProperties: function(inProperties) {
 		var html = '';
 		for (var i=0, p; p=inProperties[i]; i++) {
-			html += "&nbsp;&nbsp;&nbsp;&nbsp;" + p.name 
-				+ " (" + this.formatLink(p.kind.name) + ")"
-				+ (p.method ? ' [<span style="color:blue">method</span>]' : '')
-				+ (p.overrides ? ' [<span style="color:red">overrides ' + this.formatLink(p.overrides.kind.name) + '</span>]' : '')
-				+ (p.published ? ' [<span style="color:green">published</span>]' : '')
-				+ (p.property ? ' [<span style="color:magenta">property</span>]' : '')
-				+ " *<b>"
-				+ p.group
-				+ "</b><br/>";
+			html += this.dumpProperty(p);
 		}
 		return html;
+	},
+	dumpProperty: function(p) {
+		return "&nbsp;&nbsp;&nbsp;&nbsp;" + p.name 
+			+ (p.kind ? " (" + this.formatLink(p.kind.name) + ")" : '')
+			+ (p.method ? ' [<span style="color:blue">method</span>]' : '')
+			+ (p.overrides ? ' [<span style="color:red">overrides ' + this.formatLink(p.overrides.kind.name) + '</span>]' : '')
+			+ (p.published ? ' [<span style="color:green">published</span>]' : '')
+			+ (p.property ? ' [<span style="color:magenta">property</span>]' : '')
+			+ " *<b>"
+			+ p.group
+			+ "</b><br/>";
 	},
 	dumpKinds: function() {
 		var html = '';
