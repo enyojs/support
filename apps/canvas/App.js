@@ -2,7 +2,7 @@ enyo.kind({
 	name:"App",
 	kind:"Control",
 	components: [
-		{kind:"Canvas", attributes: {width: 500, height: 500}, components: [
+		{kind:"Canvas", style: "border: 1px solid black;", attributes: {width: 500, height: 500}, components: [
 			// a container for the balls
 			{name: "ballpit", kind: "canvas.Control"},
 			// a visible shelf to bounce off of
@@ -14,8 +14,8 @@ enyo.kind({
 		// Reset the balls / change the number
 		{tag: "button", content: "Reset", ontap: "reset"},
 		{tag: "br"},
-		{content:"Balls: ", style: "display: inline-block;"},
-		{tag: "input", name: "balls", attributes: {value: "10", placeholder: "Number of Balls"}, style: "display: inline-block;"}
+		{tag: "span", content:"Balls: "},
+		{tag: "input", name: "balls", attributes: {value: "10", placeholder: "Number of Balls"}}
 	],
 	published: {
 		// force of gravity

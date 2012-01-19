@@ -43,29 +43,7 @@ body {
 	margin-top: 6px;
 }
 
-.pretty-button {
-	position: relative;
-	margin: 2px 8px 2px 1px;
-	padding: 5px 8px 4px 8px;
+.green-input {
 	border: 0;
-	-moz-border-radius: .2em;
-	border-radius: .2em;
-	background-color: #484848;
-	color: #ababab;
-	cursor: pointer;
-	-webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
-	box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-.pretty-button:enabled:hover {
-	background-color: #383838;
-}
-
-.pretty-button:enabled:active {
-	top: 1px;
-	left: 1px;
-	-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
-	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+	background-color: green;
 }

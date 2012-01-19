@@ -14,15 +14,15 @@ body {
 }
 
 .search-input {
-	height: 37px;
-	width: 100%;
-	margin-left: 0;
+	margin: 0;
 	padding-left: 10px;
 	border: 0;
+	border-radius: 0;
 	background-color: #484848;
 	outline: none;
 	font-size: 13px;
 	color: #ababab;
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
 .search-spinner {
@@ -64,7 +64,8 @@ body {
 .related-item {
 	height: 95px;
 	width: 95px;
-	margin: 1px;
+	margin-right: 1px;
+	margin-left: 1px;
 	cursor: pointer;
 }
 
@@ -74,4 +75,8 @@ body {
 
 .center {
 	margin: auto;
+}
+
+.back-bar {
+	margin: 6px;
 }

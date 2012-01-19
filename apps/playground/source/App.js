@@ -13,7 +13,7 @@
 	},
 	{
 		description: "To add a class value, use <code>addClass</code>.",
-		code: 'this.$.button.addClass("pretty-button");'
+		code: 'this.$.input.addClass("green-input");'
 	},
 	{
 		description: "To hide/show a control, use show() or hide().",
@@ -32,13 +32,14 @@ samples = "{name: \"input\", tag: \"input\"},\n" +
 enyo.kind({
 	name: "App",
 	kind: enyo.Control,
+	classes: "theme-fu dark",
 	components: [
 		{classes: "enyo-fit", style: "right: 520px;", components: [
 			{classes: "enyo-fit panel sampler-code-panel", style: "height: 280px;", components: [
 				{classes: "sampler-title", content: "Component block to create:"},
 				{name: "samplesCode", tag: "textarea", attributes: {rows: 10}, classes: "sampler-code"},
-				{tag: "button", content: "Make It", classes: "pretty-button", ontap: "createSamples"},
-				{tag: "button", content: "Reset", classes: "pretty-button", ontap: "reset"}
+				{tag: "button", content: "Make It", ontap: "createSamples"},
+				{tag: "button", content: "Reset", ontap: "reset"}
 			]},
 			{classes: "enyo-fit", style: "top: 280px; height: 20px;"},
 			{kind: "Sampler", classes: "enyo-fit panel sampler-panel", style: "top: 300px;"}
@@ -99,7 +100,7 @@ enyo.kind({
 	components: [
 		{name: "description"},
 		{name: "code", tag: "textarea", classes: "code"},
-		{tag: "button", content: "Try It", classes: "pretty-button", ontap: "tryItClick"}
+		{tag: "button", content: "Try It", ontap: "tryItClick"}
 	],
 	create: function() {
 		this.inherited(arguments);
