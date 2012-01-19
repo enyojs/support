@@ -31,7 +31,7 @@ enyo.kind({
 		{name: "main", classes: "enyo-fit", style: "left: 300px; background: black;", components: [
 			// ui for navigating back to search panel when displayed in a small viewport.
 			{name: "back", classes: "enyo-fit back-bar theme-fu dark", style: "height: 50px;", components: [
-				{tag: "button", content: "Back", ontap: "showSearchView"}
+				{tag: "button", content: "Back", ontap: "showSearchView", ontouchstart: "preventTouchstart"}
 			]},
 			// space where users of this kind can insert controls.
 			{name: "client", classes: "enyo-fit", style: "top: 50px; bottom: 117px;"},
@@ -64,6 +64,7 @@ enyo.kind({
 			this.$.back.setShowing(this.smallified);
 		}
 		this.$.main.setShowing(!this.smallified || this.isViewingDetail);
+		this.$.left.setShowing(!this.smallified || !this.isViewingDetail);
 	},
 	//* @public
 	// in small layout mode, show the detail view
@@ -117,5 +118,9 @@ enyo.kind({
 	//* In this case a tap event will be generated only when the user does not drag.
 	preventDragTap: function(inSender, inEvent) {
 		inEvent.preventTap();
+	},
+	// prevent input from being focused when switching back to search view
+	preventTouchstart: function(inSender, inEvent) {
+		inEvent.preventDefault();
 	}
 });
