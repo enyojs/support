@@ -1,4 +1,5 @@
 ﻿enyo.depends(
+	"$lib/fu",
 	"source/Flickr.js",
 	"source/FlickrSearch.js",
 	"source/Viewer.js",
