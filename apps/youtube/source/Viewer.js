@@ -1,4 +1,7 @@
-﻿/*
+﻿// Should allow touch scrolling on all devices that do not have it natively.
+enyo.Scroller.forceTouchScrolling = !enyo.Scroller.hasTouchScrolling();
+
+/*
 	A kind for displaying the ui of a simple search, list, detail app
 */
 enyo.kind({
@@ -25,7 +28,7 @@ enyo.kind({
 				{classes: "enyo-fit search-button", style: "left: auto; width: 39px;", tag: "img", src: "images/search-button.png", ontap: "search"}
 			]},
 			// list
-			{name: "results", style: "top: 39px;", classes: "enyo-fit simple-scroller list", ondragfinish: "preventDragTap"}
+			{name: "results", kind: "Scroller", horizontal: false, style: "top: 39px;", classes: "enyo-fit list"}
 		]},
 		// main panel
 		{name: "main", classes: "enyo-fit", style: "left: 300px; background: black;", components: [
@@ -34,9 +37,9 @@ enyo.kind({
 				{tag: "button", content: "Back", ontap: "showSearchView", ontouchstart: "preventTouchstart"}
 			]},
 			// space where users of this kind can insert controls.
-			{name: "client", classes: "enyo-fit", style: "top: 50px; bottom: 117px;"},
+			{name: "client", classes: "enyo-fit", style: "top: 50px; bottom: 100px;"},
 			// related results list
-			{name: "related", style: "top: auto; height: 117px;", classes: "enyo-fit simple-scroller related-list", ondragfinish: "preventDragTap"}
+			{name: "related", kind: "Scroller", vertical: false, style: "top: auto; height: 100px;", classes: "enyo-fit related-list"}
 		]}
 	],
 	//* called after this control is rendered
@@ -114,12 +117,7 @@ enyo.kind({
 		this.$.related.render();
 	},
 	//* @protected
-	//* Prevent taps after the user drags. This is often useful in a region that is touch scrolled.
-	//* In this case a tap event will be generated only when the user does not drag.
-	preventDragTap: function(inSender, inEvent) {
-		inEvent.preventTap();
-	},
-	// prevent input from being focused when switching back to search view
+	//* prevent input from being focused when switching back to search view
 	preventTouchstart: function(inSender, inEvent) {
 		inEvent.preventDefault();
 	}
