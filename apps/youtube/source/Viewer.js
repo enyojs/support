@@ -28,7 +28,7 @@ enyo.kind({
 				{classes: "enyo-fit search-button", style: "left: auto; width: 39px;", tag: "img", src: "images/search-button.png", ontap: "search"}
 			]},
 			// list
-			{name: "results", kind: "Scroller", horizontal: false, style: "top: 39px;", classes: "enyo-fit list"}
+			{name: "results", kind: "Scroller", horizontal: false, style: "top: 39px;", classes: "enyo-fit list", ondragfinish: "preventDragTap"}
 		]},
 		// main panel
 		{name: "main", classes: "enyo-fit", style: "left: 300px; background: black;", components: [
@@ -39,7 +39,7 @@ enyo.kind({
 			// space where users of this kind can insert controls.
 			{name: "client", classes: "enyo-fit", style: "top: 50px; bottom: 100px;"},
 			// related results list
-			{name: "related", kind: "Scroller", vertical: false, style: "top: auto; height: 100px;", classes: "enyo-fit related-list"}
+			{name: "related", kind: "Scroller", vertical: false, style: "top: auto; height: 100px;", classes: "enyo-fit related-list", ondragfinish: "preventDragTap"}
 		]}
 	],
 	//* called after this control is rendered
@@ -85,7 +85,7 @@ enyo.kind({
 	//* which is implemented to retrieve results, after which showResults should be called.
 	search: function() {
 		this.$.spinner.setShowing(true);
-		this.doSearch(this.$.input.getValue());
+		this.doSearch(this.$.input.hasNode().value);
 	},
 	//* @public
 	//* display the given search results
@@ -117,6 +117,11 @@ enyo.kind({
 		this.$.related.render();
 	},
 	//* @protected
+	//* Prevent taps after the user drags. This is often useful in a region that is touch scrolled.
+	//* In this case a tap event will be generated only when the user does not drag.
+	preventDragTap: function(inSender, inEvent) {
+		inEvent.preventTap();
+	},
 	//* prevent input from being focused when switching back to search view
 	preventTouchstart: function(inSender, inEvent) {
 		inEvent.preventDefault();
