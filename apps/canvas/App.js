@@ -39,7 +39,7 @@ enyo.kind({
 			bounce = (enyo.irand(69) + 30) / 100;
 			color = colors[enyo.irand(colors.length)];
 			t = enyo.irand(375);
-			l = enyo.irand(50) * 10;
+			l = 10 + (enyo.irand(49) * 10);
 			this.$.ballpit.createComponent({kind: "canvas.Circle", bounds: {l: l, t: t, w: 10}, color: color, bounce: bounce, vel: 0, owner: this});
 		}
 		// (re)start loop
