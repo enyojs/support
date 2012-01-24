@@ -20,7 +20,7 @@ enyo.kind({
 		// left panel
 		{name: "left", classes: "enyo-fit", style: "width: 300px;", components: [
 			// search controls
-			{classes: "enyo-fit", style: "height: 39px;", components: [
+			{classes: "enyo-fit header", style: "height: 39px;", components: [
 				{classes: "enyo-fit", style: "right: 39px;", components: [
 					{name: "input", classes: "enyo-fit search-input", tag: "input", attributes: {value: "waterfall"}},
 					{name: "spinner", tag: "img", src: "images/spinner.gif", showing: false, classes: "search-spinner"}
@@ -28,10 +28,10 @@ enyo.kind({
 				{classes: "enyo-fit search-button", style: "left: auto; width: 39px;", tag: "img", src: "images/search-button.png", ontap: "search"}
 			]},
 			// list
-			{name: "results", kind: "Scroller", horizontal: false, style: "top: 39px;", classes: "enyo-fit list", ondragfinish: "preventDragTap"}
+			{name: "results", kind: "Scroller", horizontal: false, style: "top: 39px;", classes: "enyo-fit list enyo-unselectable", ondragfinish: "preventDragTap"}
 		]},
 		// main panel
-		{name: "main", classes: "enyo-fit", style: "left: 300px; background: black;", components: [
+		{name: "main", classes: "enyo-fit enyo-unselectable", style: "left: 300px; background: black;", components: [
 			// ui for navigating back to search panel when displayed in a small viewport.
 			{name: "back", classes: "enyo-fit back-bar theme-fu dark", style: "height: 50px;", components: [
 				{tag: "button", content: "Back", ontap: "showSearchView", ontouchstart: "preventTouchstart"}
@@ -112,7 +112,7 @@ enyo.kind({
 		this.$.related.destroyClientControls();
 		for (var i=0, results=inResults, r; r=results[i]; i++) {
 			this.$.related.createComponent({tag: "img", src: r.thumbnail, classes: "related-item", 
-				ontap: "select", data: r, owner: this, attributes: {draggable: false}});
+				ontap: "select", data: r, owner: this, attributes: {draggable: false, ondragstart: "return false;"}});
 		}
 		this.$.related.render();
 	},
