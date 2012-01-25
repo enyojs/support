@@ -51,6 +51,7 @@ enyo.kind({
 		}
 	},
 	endedHandler: function() {
+		enyo.job.stop(this.id + "enableSound");
 		this.canplay = true;
 	},
 	getImage: function(inIndex) {
