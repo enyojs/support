@@ -20,7 +20,8 @@ enyo.kind({
 			srcs = [srcs];
 		}
 		for (var i = 0, s; s = srcs[i]; i++) {
-			a.createComponent({tag:"source", src:s, owner:this});
+			var type = "audio/" + s.replace(/[^.]*./,"");
+			a.createComponent({tag:"source", src:s, attributes:{type:type}, owner:this});
 		}
 		a.render();
 		if (a = a.hasNode()) {

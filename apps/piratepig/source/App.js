@@ -10,12 +10,12 @@ enyo.kind({
 	components:[
 		{name:"bottom", classes:"overlap center bottom"},
 		{name:"hats", style:"display: none;", components: [
-			{kind:"Image", onLoad:"loadHandler", src:"images/game_bear.png"},
-			{kind:"Image", onLoad:"loadHandler", src:"images/game_bunny_02.png"},
-			{kind:"Image", onLoad:"loadHandler", src:"images/game_carrot.png"},
-			{kind:"Image", onLoad:"loadHandler", src:"images/game_lemon.png"},
-			{kind:"Image", onLoad:"loadHandler", src:"images/game_panda.png"},
-			{kind:"Image", onLoad:"loadHandler", src:"images/game_piratePig.png"},
+			{kind:"Image", onload:"loadHandler", src:"images/game_bear.png"},
+			{kind:"Image", onload:"loadHandler", src:"images/game_bunny_02.png"},
+			{kind:"Image", onload:"loadHandler", src:"images/game_carrot.png"},
+			{kind:"Image", onload:"loadHandler", src:"images/game_lemon.png"},
+			{kind:"Image", onload:"loadHandler", src:"images/game_panda.png"},
+			{kind:"Image", onload:"loadHandler", src:"images/game_piratePig.png"},
 		]},
 		// why can't there just be one standard that isn't wav?
 		{name:"sounds", style:"display: none;", components:[
@@ -54,7 +54,7 @@ enyo.kind({
 		this.canplay = true;
 	},
 	getImage: function(inIndex) {
-		return this.$.hats.getClientControls()[inIndex].getNode();
+		return this.$.hats.getClientControls()[inIndex].hasNode();
 	},
 	getType: function() {
 		return enyo.irand(this.$.hats.getClientControls().length);
