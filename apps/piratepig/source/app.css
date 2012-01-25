@@ -30,6 +30,10 @@
 	right: 0;
 }
 
+.border {
+	border: 1px solid black;
+}
+
 .score {
 	text-align: right;
 	vertical-align: center;

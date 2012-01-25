@@ -34,7 +34,7 @@ enyo.kind({
 		{name:"selectbox", kind:"Canvas", attributes:{height:"560px", width:"560px"}, classes:"overlap hcenter", components:[
 			{name:"selector", kind:"Selector", color:"red"}
 		]},
-		{name:"hatbox", kind:"Canvas", attributes:{height:"560px", width:"560px"}, classes:"overlap hcenter", ontap:"hatTap"}
+		{name:"hatbox", kind:"Canvas", attributes:{height:"560px", width:"560px"}, classes:"overlap hcenter border", ontap:"hatTap"}
 	],
 	create: function() {
 		this.inherited(arguments);
