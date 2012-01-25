@@ -2,6 +2,8 @@
 	"$lib/extra/utils/job.js",
 	"$lib/canvas",
 	"app.css",
+	"Audio.js",
+	"Image.js",
 	"Hat.js",
 	"Selector.js",
 	"App.js"

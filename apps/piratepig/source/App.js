@@ -10,40 +10,20 @@ enyo.kind({
 	components:[
 		{name:"bottom", classes:"overlap center bottom"},
 		{name:"hats", style:"display: none;", components: [
-			{tag:"image", attributes:{onload:"enyo.bubble(arguments[0])"}, src:"images/game_bear.png"},
-			{tag:"image", attributes:{onload:"enyo.bubble(arguments[0])"}, src:"images/game_bunny_02.png"},
-			{tag:"image", attributes:{onload:"enyo.bubble(arguments[0])"}, src:"images/game_carrot.png"},
-			{tag:"image", attributes:{onload:"enyo.bubble(arguments[0])"}, src:"images/game_lemon.png"},
-			{tag:"image", attributes:{onload:"enyo.bubble(arguments[0])"}, src:"images/game_panda.png"},
-			{tag:"image", attributes:{onload:"enyo.bubble(arguments[0])"}, src:"images/game_piratePig.png"},
+			{kind:"Image", onLoad:"loadHandler", src:"images/game_bear.png"},
+			{kind:"Image", onLoad:"loadHandler", src:"images/game_bunny_02.png"},
+			{kind:"Image", onLoad:"loadHandler", src:"images/game_carrot.png"},
+			{kind:"Image", onLoad:"loadHandler", src:"images/game_lemon.png"},
+			{kind:"Image", onLoad:"loadHandler", src:"images/game_panda.png"},
+			{kind:"Image", onLoad:"loadHandler", src:"images/game_piratePig.png"},
 		]},
 		// why can't there just be one standard that isn't wav?
 		{name:"sounds", style:"display: none;", components:[
-			{name:"three",     tag:"audio",  attributes:{onended:"enyo.bubble(arguments[0])"}, components:[
-				{tag:"source", attributes:{src:"sounds/3.ogg"}},
-				{tag:"source", attributes:{src:"sounds/3.mp3"}},
-				{tag:"source", attributes:{src:"sounds/3.wav"}}
-			]},
-			{name:"four",      tag:"audio",  attributes:{onended:"enyo.bubble(arguments[0])"}, components:[
-				{tag:"source", attributes:{src:"sounds/4.ogg"}},
-				{tag:"source", attributes:{src:"sounds/4.mp3"}},
-				{tag:"source", attributes:{src:"sounds/4.wav"}}
-			]},
-			{name:"fiveplus",  tag:"audio",  attributes:{onended:"enyo.bubble(arguments[0])"}, components:[
-				{tag:"source", attributes:{src:"sounds/5.ogg"}},
-				{tag:"source", attributes:{src:"sounds/5.mp3"}},
-				{tag:"source", attributes:{src:"sounds/5.wav"}}
-			]},
-			{name:"whiff",     tag:"audio",  attributes:{onended:"enyo.bubble(arguments[0])"}, components:[
-				{tag:"source", attributes:{src:"sounds/whiff.ogg"}},
-				{tag:"source", attributes:{src:"sounds/whiff.mp3"}},
-				{tag:"source", attributes:{src:"sounds/whiff.wav"}}
-			]},
-			{name:"theme",     tag:"audio",  attributes:{onended:"enyo.bubble(arguments[0])"}, components:[
-				{tag:"source", attributes:{src:"sounds/theme.ogg"}},
-				{tag:"source", attributes:{src:"sounds/theme.mp3"}},
-				{tag:"source", attributes:{src:"sounds/theme.wav"}}
-			]}
+			{name:"three", kind:"Audio", src:["sounds/3.ogg", "sounds/3.mp3", "sounds/3.wav"], onEnded: "endedHandler"},
+			{name:"four", kind:"Audio", src:["sounds/4.ogg", "sounds/4.mp3", "sounds/4.wav"], onEnded: "endedHandler"},
+			{name:"fiveplus", kind:"Audio", src:["sounds/5.ogg", "sounds/5.mp3", "sounds/5.wav"], onEnded: "endedHandler"},
+			{name:"whiff", kind:"Audio", src:["sounds/whiff.ogg", "sounds/whiff.mp3", "sounds/whiff.wav"], onEnded:"endedHandler"},
+			{name:"theme", kind:"Audio", src:["sounds/theme.ogg", "sounds/theme.mp3", "sounds/theme.wav"], onEnded:"endedHandler"}
 		]},
 		{name:"title", style:"width: 560px; height: 100px;", classes:"hcenter banner", components:[
 			{name:"score", classes:"score", content:"0"},
@@ -59,6 +39,10 @@ enyo.kind({
 	create: function() {
 		this.inherited(arguments);
 		this.addClass("bg");
+		// sounds only occur on user actions on ios
+		if (navigator.userAgent.match(/i(?:pad|phone)/i)) {
+			this.ios = true;
+		}
 	},
 	loadHandler: function() {
 		this.loaded = (this.loaded || 0) + 1;
@@ -70,7 +54,7 @@ enyo.kind({
 		this.canplay = true;
 	},
 	getImage: function(inIndex) {
-		return this.$.hats.getClientControls()[inIndex].hasNode();
+		return this.$.hats.getClientControls()[inIndex].getNode();
 	},
 	getType: function() {
 		return enyo.irand(this.$.hats.getClientControls().length);
@@ -134,25 +118,25 @@ enyo.kind({
 	stop: function() {
 		clearInterval(this.pulse);
 	},
-	playSound: function(inMatches) {
-		if (this.canplay) {
+	playSound: function(inNum, inUserEvent) {
+		var iosplay = this.ios ? inUserEvent : true;
+		if (this.canplay && iosplay) {
 			this.canplay = false;
 			var n;
-			if (inMatches >= 5) {
-				n = this.$.fiveplus.hasNode();
-			} else if (inMatches == 4) {
-				n = this.$.four.hasNode();
-			} else if (inMatches <= 3 && inMatches > 0) {
-				n = this.$.three.hasNode();
-			} else if (inMatches == -1) {
-				n = this.$.theme.hasNode();
+			if (inNum >= 5) {
+				n = this.$.fiveplus;
+			} else if (inNum == 4) {
+				n = this.$.four;
+			} else if (inNum <= 3 && inNum > 0) {
+				n = this.$.three;
+			} else if (inNum == -1) {
+				n = this.$.theme;;
 			} else {
-				n = this.$.whiff.hasNode();
+				n = this.$.whiff;
 			}
 			if (n && n.play) {
-				n.load();
 				n.play();
-				var delay = inMatches == -1 ? 6000 : 1000;
+				var delay = inNum == -1 ? 6000 : 1000;
 				enyo.job(this.id+"enableSound", enyo.bind(this,"endedHandler"), delay);
 			}
 		}
@@ -164,6 +148,7 @@ enyo.kind({
 		var col = Math.floor(x / (this.hatsize + this.hatmargin));
 		var row = Math.floor(y / (this.hatsize + this.hatmargin));
 		var oh = this.map[col][row];
+		var matches = 0;
 		if (oh.animating) {
 			return;
 		}
@@ -173,8 +158,9 @@ enyo.kind({
 		} else {
 			var d = this.selected.distance(oh);
 			if (Math.abs(d.di) + Math.abs(d.dj) == 1) {
-				this.exchange(this.selected, oh);
+				matches = this.exchange(this.selected, oh);
 			}
+			this.playSound(matches, true);
 			this.selected = null;
 			this.$.selector.hide();
 		}
@@ -199,9 +185,9 @@ enyo.kind({
 				this.moves.push(inB.moveY(-d.dj));
 			}
 		}
-		this.playSound(matches.length);
 		this.map[inA.i][inA.j] = inA;
 		this.map[inB.i][inB.j] = inB;
+		return matches.length;
 	},
 	checkMatches: function() {
 		var matches = [];
@@ -315,9 +301,9 @@ enyo.kind({
 		this.start();
 	},
 	touchstartHandler: function() {
-		if (!this.iosfirstsound) {
+		if (this.ios && !this.iosfirstsound) {
 			this.iosfirstsound = true;
-			this.playSound(-1);
+			this.playSound(-1, true);
 		}
 	}
 });
