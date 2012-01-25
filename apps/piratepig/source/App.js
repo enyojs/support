@@ -123,20 +123,25 @@ enyo.kind({
 		if (this.canplay && iosplay) {
 			this.canplay = false;
 			var n;
+			var delay = 0;
 			if (inNum >= 5) {
 				n = this.$.fiveplus;
+				delay = 2800;
 			} else if (inNum == 4) {
 				n = this.$.four;
+				delay = 800;
 			} else if (inNum <= 3 && inNum > 0) {
 				n = this.$.three;
+				delay = 100;
 			} else if (inNum == -1) {
-				n = this.$.theme;;
+				n = this.$.theme;
+				delay = 6000;
 			} else {
 				n = this.$.whiff;
+				delay = 2000;
 			}
 			if (n && n.play) {
 				n.play();
-				var delay = inNum == -1 ? 6000 : 1000;
 				enyo.job(this.id+"enableSound", enyo.bind(this,"endedHandler"), delay);
 			}
 		}
@@ -157,10 +162,15 @@ enyo.kind({
 			this.$.selector.show(col, row);
 		} else {
 			var d = this.selected.distance(oh);
-			if (Math.abs(d.di) + Math.abs(d.dj) == 1) {
+			// manhattan distance
+			var md = Math.abs(d.di) + Math.abs(d.dj);
+			if (md == 1) {
 				matches = this.exchange(this.selected, oh);
 			}
-			this.playSound(matches, true);
+			// don't play sound if you tap the selected square again
+			if (md != 0) {
+				this.playSound(matches, true);
+			}
 			this.selected = null;
 			this.$.selector.hide();
 		}
