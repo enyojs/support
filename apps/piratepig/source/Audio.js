@@ -20,13 +20,11 @@ enyo.kind({
 			srcs = [srcs];
 		}
 		for (var i = 0, s; s = srcs[i]; i++) {
-			var type = "audio/" + s.replace(/[^.]*./,"");
-			a.createComponent({tag:"source", src:s, attributes:{type:type}, owner:this});
+			var type = s.replace(/[^.]*./,"");
+			var mime = {mp3:"audio/mpeg", ogg:"audio/ogg", wav:"audio/wav"}[type];
+			a.createComponent({tag:"source", src:s, attributes:{type:mime}, owner:this});
 		}
-		a.render();
-		if (a = a.hasNode()) {
-			a.onended = enyo.bind(this, "doEnded");
-		}
+		a.attributes.ended = enyo.bind(this, "doEnded");
 	},
 	//* @public
 	play: function() {
