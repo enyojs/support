@@ -1,4 +1,7 @@
-﻿/*
+﻿// Should allow touch scrolling on all devices that do not have it natively.
+enyo.Scroller.forceTouchScrolling = !enyo.Scroller.hasTouchScrolling();
+
+/*
 	A kind for displaying the ui of a simple search, list, detail app
 */
 enyo.kind({
@@ -17,7 +20,7 @@ enyo.kind({
 		// left panel
 		{name: "left", classes: "enyo-fit", style: "width: 300px;", components: [
 			// search controls
-			{classes: "enyo-fit", style: "height: 39px;", components: [
+			{classes: "enyo-fit header", style: "height: 39px;", components: [
 				{classes: "enyo-fit", style: "right: 39px;", components: [
 					{name: "input", classes: "enyo-fit search-input", tag: "input", attributes: {value: "waterfall"}},
 					{name: "spinner", tag: "img", src: "images/spinner.gif", showing: false, classes: "search-spinner"}
@@ -25,18 +28,18 @@ enyo.kind({
 				{classes: "enyo-fit search-button", style: "left: auto; width: 39px;", tag: "img", src: "images/search-button.png", ontap: "search"}
 			]},
 			// list
-			{name: "results", style: "top: 39px;", classes: "enyo-fit simple-scroller list", ondragfinish: "preventDragTap"}
+			{name: "results", kind: "Scroller", horizontal: false, style: "top: 39px;", classes: "enyo-fit list enyo-unselectable", ondragfinish: "preventDragTap"}
 		]},
 		// main panel
-		{name: "main", classes: "enyo-fit", style: "left: 300px; background: black;", components: [
+		{name: "main", classes: "enyo-fit enyo-unselectable", style: "left: 300px; background: black;", components: [
 			// ui for navigating back to search panel when displayed in a small viewport.
 			{name: "back", classes: "enyo-fit back-bar theme-fu dark", style: "height: 50px;", components: [
-				{tag: "button", content: "Back", ontap: "showSearchView"}
+				{tag: "button", content: "Back", ontap: "showSearchView", ontouchstart: "preventTouchstart"}
 			]},
 			// space where users of this kind can insert controls.
-			{name: "client", classes: "enyo-fit", style: "top: 50px; bottom: 117px;"},
+			{name: "client", classes: "enyo-fit", style: "top: 50px; bottom: 100px;"},
 			// related results list
-			{name: "related", style: "top: auto; height: 117px;", classes: "enyo-fit simple-scroller related-list", ondragfinish: "preventDragTap"}
+			{name: "related", kind: "Scroller", vertical: false, style: "top: auto; height: 100px;", classes: "enyo-fit related-list", ondragfinish: "preventDragTap"}
 		]}
 	],
 	//* called after this control is rendered
@@ -64,6 +67,7 @@ enyo.kind({
 			this.$.back.setShowing(this.smallified);
 		}
 		this.$.main.setShowing(!this.smallified || this.isViewingDetail);
+		this.$.left.setShowing(!this.smallified || !this.isViewingDetail);
 	},
 	//* @public
 	// in small layout mode, show the detail view
@@ -81,7 +85,7 @@ enyo.kind({
 	//* which is implemented to retrieve results, after which showResults should be called.
 	search: function() {
 		this.$.spinner.setShowing(true);
-		this.doSearch(this.$.input.getValue());
+		this.doSearch(this.$.input.hasNode().value);
 	},
 	//* @public
 	//* display the given search results
@@ -108,7 +112,7 @@ enyo.kind({
 		this.$.related.destroyClientControls();
 		for (var i=0, results=inResults, r; r=results[i]; i++) {
 			this.$.related.createComponent({tag: "img", src: r.thumbnail, classes: "related-item", 
-				ontap: "select", data: r, owner: this, attributes: {draggable: false}});
+				ontap: "select", data: r, owner: this, attributes: {draggable: false, ondragstart: "return false;"}});
 		}
 		this.$.related.render();
 	},
@@ -117,5 +121,9 @@ enyo.kind({
 	//* In this case a tap event will be generated only when the user does not drag.
 	preventDragTap: function(inSender, inEvent) {
 		inEvent.preventTap();
+	},
+	//* prevent input from being focused when switching back to search view
+	preventTouchstart: function(inSender, inEvent) {
+		inEvent.preventDefault();
 	}
 });

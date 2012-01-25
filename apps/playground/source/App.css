@@ -1,49 +1,49 @@
 body {
-	font-family: Prelude Medium, Arial;
-	font-size: 13px;
-	color: #ababab;
-	background-color: #0e0e0e;
-	-webkit-user-select: none;
-	-moz-user-select: none;
+	font-family: Arial;
 }
 
-.panel {
-	background-color: #323232;
-	margin: 20px;
+div {
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
 }
 
-.sampler-code-panel {
-	padding: 0 30px;
+.title {
+	background: black;
+	color: #c0c0c0;
+	font-size: 20px;
+	font-weight: bold;
+	padding: 10px;
 }
 
-.sampler-panel {
+.code-title {
+	padding: 10px 0;
+}
+
+.code-select {
+	margin: 0 10px;
+}
+
+.enyo-fit.code > * {
+	left: 10px;
+	right: 10px;
+}
+
+.theme-fu button.code-make-button {
+	background-color: darkgreen;
+	color: white;
+}
+
+.player {
+	background: #eaeaea;
 	padding: 30px;
 }
 
-.examples-panel {
-	margin-top: 19px;
-	overflow: auto;
-}
-
-.example {
-	padding: 10px 20px;
-	border-top: 1px solid #0e0e0e;
-}
-
-.code, .sampler-code {
-	width: 100%;
-}
-
-.sampler-title {
-	margin-top: 30px;
-	font-size: 15px;
-}
-
-.sampler-code {
-	margin-top: 6px;
-}
-
-.green-input {
-	border: 0;
-	background-color: green;
+.sample-output {
+	min-height: 200px;
+	border: 1px solid black;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 10px;
+	text-align: center;
 }
