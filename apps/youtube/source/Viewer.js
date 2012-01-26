@@ -22,7 +22,9 @@ enyo.kind({
 			// search controls
 			{classes: "enyo-fit header", style: "height: 39px;", components: [
 				{classes: "enyo-fit", style: "right: 39px;", components: [
-					{name: "input", classes: "enyo-fit search-input", tag: "input", attributes: {value: "waterfall"}},
+					{classes: "enyo-fit", components: [
+						{name: "input", classes: "enyo-view-fit search-input", tag: "input", attributes: {value: "waterfall"}}
+					]},
 					{name: "spinner", tag: "img", src: "images/spinner.gif", showing: false, classes: "search-spinner"}
 				]},
 				{classes: "enyo-fit search-button", style: "left: auto; width: 39px;", tag: "img", src: "images/search-button.png", ontap: "search"}
