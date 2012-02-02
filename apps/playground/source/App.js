@@ -14,8 +14,10 @@
 					{tag: "option", content: "Sample4"}
 				]}
 			]},
-			{kind: "CodeEditor", classes: "enyo-fit", style: "top: 46px; bottom: 50px;", onLoad: "go"},
-			{classes: "enyo-fit", style: "height: 50px; top: auto;", components: [
+			{classes: "enyo-fit", style: "top: 46px; bottom: 50px;", components: [
+				{kind: "CodeEditor", classes: "enyo-view-fit code-editor", onLoad: "go"}
+			]},
+			{classes: "enyo-fit", style: "height: 50px; top: auto; padding: 4px 0;", components: [
 				{tag: "button", classes: "code-make-button", content: "Make It", ontap: "go"}
 			]}
 		]},

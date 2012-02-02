@@ -1,0 +1,50 @@
+.bg {
+	background-image: url(../images/background_tile.png);
+	background-repeat: repeat-x;
+	background-color: #d8f9ff;
+}
+
+.bottom {
+	background-image: url(../images/center_bottom.png);
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-size: auto;
+}
+
+.overlap {
+	position: absolute;
+	margin: auto;
+}
+
+.center, .hcenter {
+	left: 0;
+	right: 0;
+}
+
+.center, .vcenter {
+	top: 0;
+	bottom: 0;
+}
+
+.right {
+	right: 0;
+}
+
+.border {
+	border: 1px solid black;
+}
+
+.score {
+	text-align: right;
+	vertical-align: center;
+	font-family: "Sans";
+	font-size: 25px;
+}
+
+.banner {
+	margin: auto;
+	background-image: url(../images/logo.png);
+	background-position: top left;
+	background-repeat: no-repeat;
+	background-size: contain;
+}

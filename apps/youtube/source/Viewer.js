@@ -15,6 +15,9 @@ enyo.kind({
 		//* event fired when the user selects a search result
 		onSelect: ""
 	},
+	published: {
+		searchQuery: "waterfall"
+	},
 	//* @protected
 	components: [
 		// left panel
@@ -22,7 +25,9 @@ enyo.kind({
 			// search controls
 			{classes: "enyo-fit header", style: "height: 39px;", components: [
 				{classes: "enyo-fit", style: "right: 39px;", components: [
-					{name: "input", classes: "enyo-fit search-input", tag: "input", attributes: {value: "waterfall"}},
+					{classes: "enyo-fit", components: [
+						{name: "input", classes: "enyo-view-fit search-input", tag: "input", onkeypress: "inputKeypress"}
+					]},
 					{name: "spinner", tag: "img", src: "images/spinner.gif", showing: false, classes: "search-spinner"}
 				]},
 				{classes: "enyo-fit search-button", style: "left: auto; width: 39px;", tag: "img", src: "images/search-button.png", ontap: "search"}
@@ -42,6 +47,10 @@ enyo.kind({
 			{name: "related", kind: "Scroller", vertical: false, style: "top: auto; height: 100px;", classes: "enyo-fit related-list", ondragfinish: "preventDragTap"}
 		]}
 	],
+	create: function() {
+		this.inherited(arguments);
+		this.searchQueryChanged();
+	},
 	//* called after this control is rendered
 	rendered: function() {
 		this.inherited(arguments);
@@ -81,15 +90,28 @@ enyo.kind({
 		this.validateLayout();
 	},
 	//* @protected
+	inputKeypress: function(inSender, inEvent) {
+		if (inEvent.keyCode == 13) {
+			this.search();
+		}
+	},
+	searchQueryChanged: function() {
+		this.$.input.setAttribute("value", this.searchQuery);
+		this.search();
+	},
+	getSearchQuery: function() {
+		return this.$.input.hasNode() ? this.$.input.node.value : this.searchQuery;
+	},
 	//* perform a searched based on user input, fires the onSearch event
 	//* which is implemented to retrieve results, after which showResults should be called.
 	search: function() {
 		this.$.spinner.setShowing(true);
-		this.doSearch(this.$.input.hasNode().value);
+		this.doSearch(this.getSearchQuery());
 	},
 	//* @public
 	//* display the given search results
 	showResults: function(inResults) {
+		this.selected = null;
 		this.$.spinner.setShowing(false);
 		this.$.results.destroyClientControls();
 		this.results = inResults;
@@ -103,6 +125,11 @@ enyo.kind({
 	//* handle a user selection of a search result
 	//* fire the onSelect event which is typically impelemented to display a result in the detail view.
 	select: function(inSender) {
+		if (this.selected) {
+			this.selected.removeClass("item-selected");
+		}
+		inSender.addClass("item-selected");
+		this.selected = inSender;
 		this.showDetailView();
 		this.doSelect(inSender.data);
 	},
