@@ -54,7 +54,6 @@ body {
 
 .list {
 	background: #323232;
-	/*overflow: hidden;*/
 }
 
 .item {
@@ -68,8 +67,11 @@ body {
 	overflow: hidden;
 }
 
+.item-selected {
+	background: #222;
+}
+
 .related-list {
-	/*overflow: hidden;*/
 	white-space: nowrap;
 }
 
