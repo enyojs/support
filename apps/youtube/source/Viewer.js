@@ -26,7 +26,7 @@ enyo.kind({
 			{classes: "enyo-fit header", style: "height: 39px;", components: [
 				{classes: "enyo-fit", style: "right: 39px;", components: [
 					{classes: "enyo-fit", components: [
-						{name: "input", classes: "enyo-view-fit search-input", tag: "input", onchange: "inputChange"}
+						{name: "input", classes: "enyo-view-fit search-input", tag: "input", onkeypress: "inputKeypress"}
 					]},
 					{name: "spinner", tag: "img", src: "images/spinner.gif", showing: false, classes: "search-spinner"}
 				]},
@@ -90,8 +90,8 @@ enyo.kind({
 		this.validateLayout();
 	},
 	//* @protected
-	inputChange: function(inSender) {
-		if (document.activeElement == inSender.hasNode()) {
+	inputKeypress: function(inSender, inEvent) {
+		if (inEvent.keyCode == 13) {
 			this.search();
 		}
 	},
