@@ -62,11 +62,11 @@ enyo.kind({
 	},
 	scale: function() {
 		var b = Math.min(window.innerWidth, window.innerHeight - (this.hatsize + this.hatmargin));
-		if (b < this.rows * 44) {
+		if (b < this.rows * 38) {
 			this.hatsize = 28;
 			this.hatmargin = 4;
 		} else if (b < this.rows * 56) {
-			this.hatsize = 38;
+			this.hatsize = 32;
 			this.hatmargin = 6;
 		} else if (b > this.rows * 100) {
 			this.hatsize = 62;
