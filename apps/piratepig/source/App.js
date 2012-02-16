@@ -61,11 +61,16 @@ enyo.kind({
 		return enyo.irand(this.$.hats.getClientControls().length);
 	},
 	scale: function() {
-		var b = Math.min(window.innerWidth, window.innerHeight - (this.hatsize + this.hatmargin));
-		if (b < this.rows * 56) {
+		var b = this.getBounds();
+		var h = b.height;
+		var w = b.width;
+		if (w < this.rows * 36 || h < (this.rows+1) * 36) {
 			this.hatsize = 28;
 			this.hatmargin = 4;
-		} else if (b > this.rows * 100) {
+		} else if (w < this.rows * 56 || h < (this.rows+1) * 56) {
+			this.hatsize = 32;
+			this.hatmargin = 4;
+		} else if (w > this.rows * 100 && h > (this.rows+1) * 100) {
 			this.hatsize = 62;
 			this.hatmargin = 10;
 		} else {
@@ -111,7 +116,6 @@ enyo.kind({
 		this.playSound(-1);
 		this.start();
 		this.splatMatches(this.checkMatches());
-		this.$.hatbox.update();
 	},
 	start: function() {
 		this.pulse = setInterval(enyo.bind(this, "heartbeat"), 30);
@@ -141,10 +145,8 @@ enyo.kind({
 				n = this.$.whiff;
 				delay = 2000;
 			}
-			if (n && n.play) {
-				n.play();
-				enyo.job(this.id+"enableSound", enyo.bind(this,"endedHandler"), delay);
-			}
+			n.play();
+			enyo.job(this.id+"enableSound", enyo.bind(this,"endedHandler"), delay);
 		}
 	},
 	hatTap: function(inSender, inEvent) {
@@ -294,6 +296,12 @@ enyo.kind({
 			this.moves = live;
 			if (this.moves.length == 0) {
 				this.splatMatches(this.checkMatches());
+				// stabilze board
+				var hc = this.$.hatbox.getClientControls();
+				for (var i = 0, h; h = hc[i]; i++) {
+					h.iChanged();
+					h.jChanged();
+				}
 			}
 			this.$.hatbox.update();
 		}

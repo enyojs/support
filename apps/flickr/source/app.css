@@ -81,6 +81,11 @@ body {
 	cursor: pointer;
 }
 
+.flickr-image {
+	max-height: 100%;
+	max-width: 100%;
+}
+
 .youtube-content {
 	margin: 50px;
 }

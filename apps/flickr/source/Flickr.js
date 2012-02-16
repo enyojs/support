@@ -5,7 +5,7 @@ enyo.kind({
 		src: ""
 	},
 	components: [
-		{name: "image", tag: "img", classes: "enyo-fit center", style: "max-height: 100%;", onload: "imageLoaded", onerror: "imageLoaded"},
+		{name: "image", tag: "img", classes: "enyo-fit center flickr-image", onload: "imageLoaded", onerror: "imageLoaded"},
 		{name: "spinner", tag: "img", src: "images/spinner.gif", classes: "enyo-fit center", showing: false}
 	],
 	create: function() {
