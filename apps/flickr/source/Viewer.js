@@ -21,7 +21,7 @@ enyo.kind({
 	//* @protected
 	components: [
 		// left panel
-		{name: "left", classes: "enyo-fit", style: "width: 300px;", components: [
+		{name: "left", classes: "enyo-fit", components: [
 			// search controls
 			{classes: "enyo-fit header", style: "height: 39px;", components: [
 				{classes: "enyo-fit", style: "right: 39px;", components: [
@@ -36,7 +36,7 @@ enyo.kind({
 			{name: "results", kind: "Scroller", horizontal: false, style: "top: 39px;", classes: "enyo-fit list enyo-unselectable", ondragfinish: "preventDragTap"}
 		]},
 		// main panel
-		{name: "main", classes: "enyo-fit enyo-unselectable", style: "left: 300px; background: black;", components: [
+		{name: "main", classes: "enyo-fit enyo-unselectable", style: "background: black;", components: [
 			// ui for navigating back to search panel when displayed in a small viewport.
 			{name: "back", classes: "enyo-fit back-bar theme-fu dark", style: "height: 50px;", components: [
 				{tag: "button", content: "Back", ontap: "showSearchView", ontouchstart: "preventTouchstart"}
