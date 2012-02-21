@@ -25,7 +25,7 @@ enyo.kind({
 			{name:"whiff", kind:"Audio", src:["sounds/whiff.ogg", "sounds/whiff.mp3", "sounds/whiff.wav"], onEnded:"endedHandler"},
 			{name:"theme", kind:"Audio", src:["sounds/theme.ogg", "sounds/theme.mp3", "sounds/theme.wav"], onEnded:"endedHandler"}
 		]},
-		{name:"title", style:"width: 560px; height: 100px;", classes:"hcenter banner", components:[
+		{name:"title", classes:"hcenter banner", components:[
 			{name:"score", classes:"score", content:"0"},
 		]},
 		{name:"backgroundbox", kind:"Canvas", attributes:{height:"560px", width:"560px"}, classes:"overlap hcenter", components:[
