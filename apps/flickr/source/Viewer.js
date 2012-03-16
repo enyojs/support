@@ -1,5 +1,5 @@
 ﻿// Should allow touch scrolling on all devices that do not have it natively.
-enyo.Scroller.forceTouchScrolling = !enyo.Scroller.hasTouchScrolling();
+enyo.Scroller.touchScrolling = !enyo.Scroller.hasTouchScrolling();
 
 /*
 	A kind for displaying the ui of a simple search, list, detail app
@@ -33,7 +33,7 @@ enyo.kind({
 				{classes: "enyo-fit search-button", style: "left: auto; width: 39px;", tag: "img", src: "images/search-button.png", ontap: "search"}
 			]},
 			// list
-			{name: "results", kind: "Scroller", horizontal: false, style: "top: 39px;", classes: "enyo-fit list enyo-unselectable", ondragfinish: "preventDragTap"}
+			{name: "results", kind: "Scroller", horizontal: "hidden", style: "top: 39px;", classes: "enyo-fit list enyo-unselectable", ondragfinish: "preventDragTap"}
 		]},
 		// main panel
 		{name: "main", classes: "enyo-fit enyo-unselectable", style: "background: black;", components: [
@@ -44,7 +44,7 @@ enyo.kind({
 			// space where users of this kind can insert controls.
 			{name: "client", classes: "enyo-fit", style: "top: 50px; bottom: 100px;"},
 			// related results list
-			{name: "related", kind: "Scroller", vertical: false, style: "top: auto; height: 100px;", classes: "enyo-fit related-list", ondragfinish: "preventDragTap"}
+			{name: "related", kind: "Scroller", vertical: "hidden", style: "top: auto; height: 100px;", classes: "enyo-fit related-list", ondragfinish: "preventDragTap"}
 		]}
 	],
 	create: function() {
