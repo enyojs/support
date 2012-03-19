@@ -12,11 +12,13 @@
 	receiveResults: function(inSender, inResults) {
 		this.$.viewer.showResults(inResults);
 	},
-	select: function(inSender, inData) {
-		var id = inData.id;
+	select: function(inSender, inEvent) {
+		var id = inEvent.data.id;
 		this.$.youTube.setShowing(true);
 		this.$.youTube.setVideoId(id);
-		enyo.YouTube.search(id, true).response(this, "receiveRelatedResults");
+		if (!inEvent.related) {
+			enyo.YouTube.search(id, true).response(this, "receiveRelatedResults");
+		}
 	},
 	receiveRelatedResults: function(inSender, inResults) {
 		this.$.viewer.showRelatedResults(inResults);

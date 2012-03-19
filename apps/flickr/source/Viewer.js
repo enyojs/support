@@ -131,7 +131,7 @@ enyo.kind({
 		inSender.addClass("item-selected");
 		this.selected = inSender;
 		this.showDetailView();
-		this.doSelect(inSender.data);
+		this.doSelect({data: inSender.data, related: inSender.related});
 	},
 	//* @public
 	//* display the given set of results in the related results view area.
@@ -139,7 +139,7 @@ enyo.kind({
 		this.$.related.destroyClientControls();
 		for (var i=0, results=inResults, r; r=results[i]; i++) {
 			this.$.related.createComponent({tag: "img", src: r.thumbnail, classes: "related-item", 
-				ontap: "select", data: r, owner: this, attributes: {draggable: false, ondragstart: "return false;"}});
+				ontap: "select", data: r, related: true, owner: this, attributes: {draggable: false, ondragstart: "return false;"}});
 		}
 		this.$.related.render();
 	},
