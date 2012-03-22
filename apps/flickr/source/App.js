@@ -14,9 +14,11 @@
 		this.results = inResults;
 		this.$.viewer.showResults(inResults);
 	},
-	select: function(inSender, inData) {
+	select: function(inSender, inEvent) {
 		this.$.flickr.setShowing(true);
-		this.$.flickr.setSrc(inData.original);
-		this.$.viewer.showRelatedResults(this.results);
+		this.$.flickr.setSrc(inEvent.data.original);
+		if (!inEvent.related) {
+			this.$.viewer.showRelatedResults(this.results);
+		}
 	}
 });
