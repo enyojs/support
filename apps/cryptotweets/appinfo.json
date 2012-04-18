@@ -1,0 +1,9 @@
+{
+	"id": "com.enyojs.sample.cryptograms",
+	"version": "0.1.0",
+	"vendor": "HP Enyo JS Framework",
+	"type": "web",
+	"main": "index.html",
+	"title": "CryptoTweets",
+	"icon": "icon_48x48.png"
+}
