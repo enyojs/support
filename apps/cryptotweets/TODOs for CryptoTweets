@@ -1,7 +1,0 @@
-TODOs for CryptoTweets
-----------------------
-
-* Wrap cypher display at word boundaries
-* Add Onyx toggle button to turn statistics display on/off
-* data structure for marking parts of the string as unencrypted
-* Detect hashtags and URLs and mark as unencrypted
