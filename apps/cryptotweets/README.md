@@ -1,4 +1,4 @@
-![CryptoTweets icon](icon_64x64.png)
+![CryptoTweets icon](https://github.com/enyojs/support/raw/master/apps/cryptotweets/icon_64x64.png)
 
 This is a simple cryptogram game written in the enyojs project's Enyo + Onyx +
 Layout client-side JavaScript libraries.
