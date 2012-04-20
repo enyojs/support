@@ -66,3 +66,26 @@ function findHashTags(str) {
 	return results;
 }
 
+/** generate a new cypher alphabet for the letters A-Z where no
+	encrypted letter maps to the original one. The distribution is 
+	probably not uniform, but it works well enough for game purposes */
+function generateCypherAlphabet() {
+	var alpha = [
+		"A","B","C","D","E","F","G","H","I",
+		"J","K","L","M","N","O","P","Q","R",
+		"S","T","U","V","W","X","Y","Z"];
+	// we'll go through alphabet and randomly swap each letter with
+	// another letter in the string, rejecting swaps that would put a
+	// letter back in its original position.
+	for (var i = 0; i < 26; ++i) {
+		var swapPos;
+		do {
+			swapPos = enyo.irand(26);
+			// and skip over a swap that puts the letter
+			// back in its original position
+		} while (alpha[swapPos] === String.fromCharCode(65 + i) ||
+			alpha[i] === String.fromCharCode(65 + swapPos));
+		swapElements(alpha, i, swapPos);
+	}
+	return alpha;
+}
