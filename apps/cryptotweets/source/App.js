@@ -36,31 +36,37 @@ enyo.kind({
 	show: function(cypherLetter) {
 		this.cypherLetter = cypherLetter;
 		this.setContent(this.cypherLetter + " " + Unicode.rightwardArrow + " ?");
-		this.acceptKey = true;
+		this.guessed = false;
 		this.inherited(arguments);
 	},
 	keypress: function(inSender, inEvent) {
-		if (!this.acceptKey) return;
-
 		var key = String.fromCharCode(inEvent.charCode).toUpperCase();
+		// after guess, letters restart guess to allow quick entry, otherwise ignore
+		if (this.guessed) {
+			if (key >= "A" && key <= "Z") {
+				enyo.job.stop("clearGuessPopup");
+				this.bubble("onStartGuess", { cypher: key });
+			}
+			return true;
+		}
 		// allow backspace or space to clear a cell
 		if (inEvent.charCode === 8 || inEvent.charCode === 32) {
 			this.setContent(this.cypherLetter + " " + Unicode.rightwardArrow +
 				" " + Unicode.nbsp);
-			this.acceptKey = false;
-			setTimeout(enyo.bind(this, this.hide), 1000);
+			this.guessed = true;
+			enyo.job("clearGuessPopup", enyo.bind(this, this.hide), 1000);
 			this.bubble("onFinishGuess", {
 				cypher: this.cypherLetter,
 				guess: null
 			});
 			return true;
 		}
-
+		// otherwise, accept letter as guess
 		if (key >= "A" && key <= "Z") {
 			this.setContent(this.cypherLetter + " " + Unicode.rightwardArrow +
 				" " + key);
-			this.acceptKey = false;
-			setTimeout(enyo.bind(this, this.hide), 1000);
+			this.guessed = true;
+			enyo.job("clearGuessPopup", enyo.bind(this, this.hide), 1000);
 			this.bubble("onFinishGuess", {
 				cypher: this.cypherLetter,
 				guess: key
