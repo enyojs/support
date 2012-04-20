@@ -29,9 +29,7 @@ enyo.kind({
 		var words = this.text.split(/ +/);
 		this.$.lines.destroyClientControls();
 		enyo.forEach(words, this.outputWord, this);
-		if (this.hasNode()) {
-			this.render();
-		}
+		this.render();
 	},
 	addLetter: function(ch) {
 		this.createComponent({
