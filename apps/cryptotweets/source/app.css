@@ -1,0 +1,70 @@
+@font-face {
+	font-family: lovely_eunike_hans;
+	src: url(../fonts/lovely_eunike_hans.ttf);
+}
+
+* { 
+	-moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+	margin: 10px;
+	background-color: #333333;
+}
+
+.btn {
+	margin-left: 10px;
+}
+
+.cryptogram {
+	margin: 10px;
+	padding: 20px 50px;
+	background-color: #BBBBBB;
+}
+
+.cell {
+	float: left;
+	width: 24px;
+	padding: 10px 5px 3px;
+	margin: 2px;
+	font: 18px "Courier New", Courier, monospace;
+	text-align: center;
+	line-height: 80%;
+}
+
+.cell > .top {
+	font-family: lovely_eunike_hans, "Courier New", Courier, monospace;
+	color: navy;
+}
+
+.selectedCell {
+	background-color: green;
+	color: white;
+	cursor: pointer;
+}
+
+.selectedCell > .top {
+	color: white;
+}
+
+.topButtons {
+	margin: 10px;
+}
+
+.distribution {
+	font: 14px "Courier New";
+	color: black;
+	border: 1px solid;
+	margin-top: 20px;
+	padding: 5px;
+}
+
+.distroLetter:after {
+	content: ", ";
+}
+
+.distroLetter:last-child:after {
+	content: "";
+}
