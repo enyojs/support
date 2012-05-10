@@ -9,6 +9,9 @@ enyo.kind({
 		{ tag: "br", attributes: { clear: "all" } },
 		{ kind: "Distribution", name: "distribution" }
 	],
+	handlers: {
+		onHoverCell: "broadcastHover"
+	},
 	published: {
 		//* required, should be capital letter in range "A" to "Z"
 		text: ""
@@ -97,5 +100,9 @@ enyo.kind({
 	restart: function() {
 		this.cypher.resetGuesses();
 		this.waterfall("onResetGuess");
+	},
+	broadcastHover: function(inSender, inEvent) {
+		// turn onHoverCell into state update message for all the cells
+		this.waterfallDown("onUpdateHoverState", { cypher: inEvent.cypher });
 	}
 });

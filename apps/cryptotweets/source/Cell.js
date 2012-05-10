@@ -9,6 +9,9 @@ enyo.kind({
 		mutable: true,
 		isLetter: false
 	},
+	events: {
+		onHoverCell: ""
+	},
 	components: [
 		{ name: "top", classes: "top" },
 		{ name: "middle", classes: "middle", content: Unicode.nbsp },
@@ -19,7 +22,7 @@ enyo.kind({
 		onResetGuess: "reset",
 		onmouseover: "hoverStart",
 		onmouseout: "hoverEnd",
-		onHoverCell: "hoverCell"
+		onUpdateHoverState: "updateHoverState"
 	},
 	create: function () {
 		this.inherited(arguments);
@@ -70,15 +73,17 @@ enyo.kind({
 			this.bubble("onStartGuess", { cypher: this.bottom });
 		}
 	},
+	// notify owner about mouse enter/leaves
 	hoverStart: function() {
 		if (this.mutable) {
-			this.parent.waterfallDown("onHoverCell", { cypher: this.bottom });
+			this.doHoverCell({ cypher: this.bottom });
 		}
 	},
 	hoverEnd: function() {
-		this.parent.waterfallDown("onHoverCell", { cypher: null });
+		this.doHoverCell({ cypher: null });
 	},
-	hoverCell: function(inSender, inEvent) {
+	// handle event sent down the tree to change my visible hover state
+	updateHoverState: function(inSender, inEvent) {
 		this.addRemoveClass("selectedCell", this.bottom === inEvent.cypher);
 	}
 });
