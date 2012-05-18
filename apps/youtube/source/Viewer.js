@@ -106,7 +106,7 @@ enyo.kind({
 	//* which is implemented to retrieve results, after which showResults should be called.
 	search: function() {
 		this.$.spinner.setShowing(true);
-		this.doSearch(this.getSearchQuery());
+		this.doSearch({query: this.getSearchQuery()});
 	},
 	//* @public
 	//* display the given search results

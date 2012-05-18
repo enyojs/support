@@ -6,8 +6,8 @@
 			{kind: "YouTube", classes: "enyo-fit", showing: false}
 		]}
 	],
-	search: function(inSender, inSearch) {
-		enyo.YouTube.search(inSearch).response(this, "receiveResults");
+	search: function(inSender, inEvent) {
+		enyo.YouTube.search(inEvent.query).response(this, "receiveResults");
 	},
 	receiveResults: function(inSender, inResults) {
 		this.$.viewer.showResults(inResults);
