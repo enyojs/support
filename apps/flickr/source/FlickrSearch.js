@@ -30,7 +30,7 @@ enyo.kind({
 			p.thumbnail = urlprefix + "_s.jpg";
 			p.original = urlprefix + ".jpg";
 		}
-		this.doResults(photos);
+		this.doResults({photos: photos});
 		return photos;
 	}
 });

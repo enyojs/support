@@ -10,9 +10,9 @@
 	search: function(inSender, inEvent) {
 		this.$.flickrSearch.search(inEvent.query);
 	},
-	searchResults: function(inSender, inResults) {
-		this.results = inResults;
-		this.$.viewer.showResults(inResults);
+	searchResults: function(inSender, inEvent) {
+		this.results = inEvent.photos;
+		this.$.viewer.showResults(inEvent.photos);
 	},
 	select: function(inSender, inEvent) {
 		this.$.flickr.setShowing(true);

@@ -21,4 +21,4 @@ enyo.kind({
 	imageLoaded: function() {
 		this.$.spinner.setShowing(false);
 	}
-})
+});
