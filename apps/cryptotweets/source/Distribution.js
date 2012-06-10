@@ -6,33 +6,26 @@ enyo.kind({
 	allowHtml: true,
 	published: {
 		cypher: null,
-		text: ""
+		distribution: null
 	},
-	computeDistribution: function () {
-		var distribution = {};
-		this.distribution = distribution;
-		forEachLetter(this, function(ch) {
-			distribution[ch] = 0;
-		});
-		for (var i = this.text.length - 1; i >= 0; --i) {
-			var ch = this.text[i];
-			if (ch >= 'A' && ch <= 'Z') {
-				distribution[ch]++;
-			}
+	distributionChanged: function() {
+		// short circuit the case where no distribution has been set
+		var distribution = this.distribution;
+		if (!distribution) {
+			this.setContent("");
+			return;
 		}
 		// save a sorted list of letters in highest-first order
-		this.sortedDistribtionKeys = Object.keys(this.distribution);
+		this.sortedDistribtionKeys = enyo.keys(distribution);
 		this.sortedDistribtionKeys.sort(function(a, b) {
 			return distribution[b] - distribution[a];
 		});
-	},
-	textChanged: function() {
-		this.computeDistribution();
+		// regenerate content
 		var content = "";
 		enyo.forEach(this.sortedDistribtionKeys, function(ch) {
-			if (this.distribution[ch] > 0) {
+			if (distribution[ch] > 0) {
 				content += "<span class=distroLetter>" + this.cypher.clearToCypher(ch) +
-					": " + this.distribution[ch] + "</span>";
+					": " + distribution[ch] + "</span>";
 			}
 		}, this);
 		this.setContent(content);
@@ -42,6 +35,6 @@ enyo.kind({
 	},
 	create: function() {
 		this.inherited(arguments);
-		this.textChanged();
+		this.distributionChanged();
 	}
 });

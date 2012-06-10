@@ -5,67 +5,97 @@ enyo.kind({
 	allowHtml: true,
 	classes: "cryptogram",
 	components: [
-		{ name: "lines" },
+		{ name: "cells", kind: enyo.Repeater, onSetupItem: "setupCell", 
+			components: [ { kind: Cell } ] },
 		{ tag: "br", attributes: { clear: "all" } },
-		{ kind: "Distribution", name: "distribution" }
+		{ kind: Distribution }
 	],
+	published: {
+		text: ""
+	},
 	handlers: {
 		onHoverCell: "broadcastHover"
 	},
-	published: {
-		//* required, should be capital letter in range "A" to "Z"
-		text: ""
-	},
+	// private properties
+	// hash mapping clear text letters to guessed letter
+	guesses: null,
 	resetCypher: function(text) {
 		this.cypher = new Cypher();
 		this.$.distribution.setCypher(this.cypher);
+	},
+	setGuess: function(clearLetter, guessLetter) {
+		// clear out any old guess with the same letter
+		forEachLetter(this, function(ch) {
+			if (this.guesses[ch] === guessLetter) {
+				this.guesses[ch] = null;
+			}
+		});
+		// set the new guess
+		this.guesses[clearLetter] = guessLetter;
 	},
 	create: function() {
 		this.inherited(arguments);
 		this.resetCypher();
 		this.textChanged();
 	},
+	markUnencrypted: function(regex) {
+		var result;
+		regex.lastIndex = 0;
+		while (result = regex.exec(this.text)) {
+			for (var i = result.index; i < regex.lastIndex; ++i) {
+				this.isEncrypted[i] = false;
+			}
+		}
+	},
+	findUnencryptedRuns: function() {
+		// put all characters into cells with default isEncrypted value
+		this.isEncrypted = [];
+		for (var i = 0; i < this.text.length; ++i) {
+			this.isEncrypted[i] = (this.text[i] >= 'A') && (this.text[i] <= 'Z');
+		}
+		// find specific strings to "unencrypt" - URLs, RT, hashtags, @names
+		this.markUnencrypted(/^RT\s/g);
+		this.markUnencrypted(/HTTPS?:\/\/\S*/g);
+		this.markUnencrypted(/@\w+/g);
+		this.markUnencrypted(/#\w+/g);
+	},
+	generateDistribution: function() {
+		var distribution = {};
+		forEachLetter(this, function(ch) {
+			distribution[ch] = 0;
+		});
+		for (var i = this.text.length - 1; i >= 0; --i) {
+			var ch = this.text[i];
+			if (this.isEncrypted[i]) {
+				distribution[ch]++;
+			}
+		}
+		this.$.distribution.setDistribution(distribution);
+	},
 	textChanged: function() {
+		// start by forcing uppercase and trimming white space
 		this.text = this.text.toUpperCase();
-		this.$.distribution.setText(this.text);
-
-		var words = this.text.split(/ +/);
-		this.$.lines.destroyClientControls();
-		enyo.forEach(words, this.outputWord, this);
-		this.render();
+		this.text = this.text.replace(/^\s+|\s+$/g,'');
+		this.text = this.text.replace(/\s+/g, Unicode.nbsp);
+		this.findUnencryptedRuns();
+		this.generateDistribution();
+		this.guesses = {};
+		this.$.cells.setCount(this.text.length);
 	},
-	addLetter: function(ch) {
-		this.createComponent({
-			kind: "Cell",
-			container: this.$.lines,
-			top: this.cypher.clearToGuess(ch),
-			bottom: this.cypher.clearToCypher(ch),
-			mutable: true,
-			isLetter: true
-		});
-	},
-	addNonLetter: function(ch) {
-		this.createComponent({
-			kind: "Cell",
-			container: this.$.lines,
-			top: ch,
-			bottom: ch,
-			mutable: false,
-			isLetter: false
-		});
-	},
-	outputWord: function(word) {
-		enyo.forEach(word, function(ch) {
-			if (ch >= "A" && ch <= "Z") {
-				this.addLetter(ch);
-			}
-			else {
-				this.addNonLetter(ch);
-			}
-		}, this);
-
-		// FIXME: need better after-word separator or wordwrap method
-		this.addNonLetter(Unicode.nbsp);
+	setupCell: function(inSender, inEvent) {
+		var ch = this.text[inEvent.index];
+		var isEncrypted = this.isEncrypted[inEvent.index];
+		var cell = inEvent.item.$.cell;
+		cell.setEncrypted(isEncrypted);
+		cell.setMutable(isEncrypted);
+		if (isEncrypted) {
+			cell.setTop(Unicode.nbsp);
+			cell.setBottom(this.cypher.clearToCypher(ch));
+		}
+		else {
+			cell.setTop(ch);
+			cell.setBottom(ch);
+		}
 	},
 	// give a hint using the given encrypted letter
 	giveHint: function(pick) {
@@ -76,7 +106,7 @@ enyo.kind({
 			// if no argument, pick a unguessed letter to reveal
 			var unguessed = [];
 			forEachLetter(this, function(ch) {
-				if (!this.cypher.clearToGuess(ch) && this.$.distribution.getCount(ch) > 0) {
+				if (!this.guesses[ch] && this.$.distribution.getCount(ch) > 0) {
 					unguessed.push(ch);
 				}
 			});
@@ -90,7 +120,7 @@ enyo.kind({
 	},
 	guessLetter: function(cypher, guess, hint) {
 		var clear = this.cypher.cypherToClear(cypher);
-		this.cypher.setGuess(clear, guess);
+		this.setGuess(clear, guess);
 		this.waterfall("onGuess", {
 			cypher: cypher,
 			guess: guess,
@@ -98,7 +128,7 @@ enyo.kind({
 		});
 	},
 	restart: function() {
-		this.cypher.resetGuesses();
+		this.guesses = {};
 		this.waterfall("onResetGuess");
 	},
 	broadcastHover: function(inSender, inEvent) {

@@ -25,7 +25,7 @@
 
 enyo.kind({
 	name: "PickLetterPopup",
-	kind: "onyx.Popup",
+	kind: onyx.Popup,
 	centered: true,
 	modal: true,
 	floating: true,
@@ -78,17 +78,16 @@ enyo.kind({
 
 enyo.kind({
 	name: "App",
-	kind: "Control",
 	classes: "onyx",
 	handlers: {
 		onStartGuess: "startGuess",
 		onFinishGuess: "finishGuess"
 	},
 	components: [
-		{ kind: "enyo.Signals",
+		{ kind: enyo.Signals,
 			onkeypress: "handleKeyPress",
 			onkeydown: "handleKeyDown" },
-		{ kind: "onyx.Toolbar", components: [
+		{ kind: onyx.Toolbar, components: [
 			//{kind: onyx.Grabber},
 			{content: "CryptoTweets", style: "padding-right: 30px"},
 			{kind: enyo.Group, highlander: false, components: [
@@ -101,8 +100,8 @@ enyo.kind({
 				{kind: onyx.Button, content: "Fetch News", onclick: "fetchNews"}
 			]}
 		]},
-		{ kind: "Cryptogram" },
-		{ name: "popup", kind: "PickLetterPopup" }
+		{ kind: Cryptogram },
+		{ name: "popup", kind: PickLetterPopup }
 	],
 	create: function() {
 		this.inherited(arguments);
@@ -114,7 +113,12 @@ enyo.kind({
 		this.nextTweetIndex = 0;
 		//this.nextTweet();
 	},
-	fetchTweets: function() {
+	fetchTweets: function(inSender) {
+		// disable button for 30 seconds to reduce API usage
+		if (inSender) {
+			inSender.setDisabled(true);
+			setTimeout(function() { inSender.setDisabled(false); }, 30000);
+		}
 		var request = new enyo.JsonpRequest({
 			url: "http://search.twitter.com/search.json",
 			callbackName: "callback"
@@ -124,7 +128,12 @@ enyo.kind({
 			q: "from:TopTweets -filter:links"
 		});
 	},
-	fetchNews: function() {
+	fetchNews: function(inSender) {
+		// disable button for 30 seconds to reduce API usage
+		if (inSender) {
+			inSender.setDisabled(true);
+			setTimeout(function() { inSender.setDisabled(false); }, 30000);
+		}
 		var request = new enyo.JsonpRequest({
 			url: "http://api.usatoday.com/open/articles/topnews",
 			callbackName: "jsoncallbackmethod"

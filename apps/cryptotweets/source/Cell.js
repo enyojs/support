@@ -7,7 +7,7 @@ enyo.kind({
 		top: "",
 		bottom: "",
 		mutable: true,
-		isLetter: false
+		encrypted: false
 	},
 	events: {
 		onHoverCell: ""
@@ -26,32 +26,38 @@ enyo.kind({
 	},
 	create: function () {
 		this.inherited(arguments);
-		this.addRemoveClass("letter", this.isLetter);
-		this.originalGuess = this.top;
+		this.encryptedChanged();
 		this.topChanged();
 		this.mutableChanged();
 		this.bottomChanged();
 	},
 	reset: function () {
 		// go back to "unguessed" state
-		if (this.isLetter) {
+		if (this.encrypted) {
 			this.setMutable(true);
 		}
-		this.setTop(this.originalGuess);
+		this.setTop("");
+	},
+	updateMiddle: function() {
+		if (this.encrypted && this.mutable) {
+			this.$.middle.setContent(Unicode.mdash);
+		}
+		else {
+			this.$.middle.setContent(Unicode.nbsp);
+		}
+	},
+	encryptedChanged: function() {
+		this.addRemoveClass("letter", this.encrypted);
+		this.updateMiddle();
+	},
+	mutableChanged: function() {
+		this.updateMiddle();
 	},
 	topChanged: function() {
 		this.$.top.setContent(this.top || Unicode.nbsp);
 	},
 	bottomChanged: function() {
 		this.$.bottom.setContent(this.bottom || Unicode.nbsp);
-	},
-	mutableChanged: function() {
-		if (this.isLetter && this.mutable) {
-			this.$.middle.setContent(Unicode.mdash);
-		}
-		else {
-			this.$.middle.setContent(Unicode.nbsp);
-		}
 	},
 	guess: function(inSender, inEvent) {
 		if (this.mutable) {
@@ -75,7 +81,7 @@ enyo.kind({
 	},
 	// notify owner about mouse enter/leaves
 	hoverStart: function() {
-		if (this.mutable) {
+		if (this.encrypted && this.mutable) {
 			this.doHoverCell({ cypher: this.bottom });
 		}
 	},
@@ -84,6 +90,8 @@ enyo.kind({
 	},
 	// handle event sent down the tree to change my visible hover state
 	updateHoverState: function(inSender, inEvent) {
-		this.addRemoveClass("selectedCell", this.bottom === inEvent.cypher);
+		if (this.encrypted && this.mutable) {
+			this.addRemoveClass("selectedCell", this.bottom === inEvent.cypher);
+		}
 	}
 });
