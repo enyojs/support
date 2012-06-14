@@ -31,8 +31,6 @@ Enyo project.
 
 * Wrap cypher display at word boundaries
 * Add toggle button to turn statistics display on/off
-* data structure for marking parts of the string as unencrypted
-* Detect hashtags and URLs and mark as unencrypted
 * add soft keyboard to popup to allow touch device play
 * make toolbar responsive to allow use on narrow-screen devices
 * make cryptogram area scrollable
