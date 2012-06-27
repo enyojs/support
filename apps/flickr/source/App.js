@@ -11,8 +11,8 @@
 		this.$.flickrSearch.search(inEvent.query);
 	},
 	searchResults: function(inSender, inEvent) {
-		this.results = inEvent.photos;
-		this.$.viewer.showResults(inEvent.photos);
+		this.results = inEvent;
+		this.$.viewer.showResults(inEvent);
 	},
 	select: function(inSender, inEvent) {
 		this.$.flickr.setShowing(true);
