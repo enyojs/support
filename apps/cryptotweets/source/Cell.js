@@ -35,8 +35,8 @@ enyo.kind({
 		// go back to "unguessed" state
 		if (this.encrypted) {
 			this.setMutable(true);
+			this.setTop("");
 		}
-		this.setTop("");
 	},
 	updateMiddle: function() {
 		if (this.encrypted && this.mutable) {
