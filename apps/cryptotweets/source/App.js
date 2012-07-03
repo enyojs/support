@@ -65,13 +65,15 @@ enyo.kind({
 		{ kind: enyo.Signals,
 			onkeypress: "handleKeyPress",
 			onkeydown: "handleKeyDown" },
-		{ kind: onyx.Toolbar, style: "background: #444F70;", components: [
-			{ content: "CryptoTweets", style: "padding-right: 10px" },
-			{ kind: enyo.Group, highlander: false, components: [
-				{kind: onyx.Button, content: "Hint", onclick: "giveHint"},
-				{kind: onyx.Button, content: "Reset", onclick: "restart"},
-				{kind: onyx.Button, content: "Next", onclick: "nextTweet"}
-			]}
+		{ kind: onyx.MoreToolbar, style: "background: #444F70;", 
+			movedClass: "toolbar-fixed-width",
+			components: [
+				{ content: "CryptoTweets", style: "padding-right: 100px" },
+				{ kind: enyo.Group, highlander: false, components: [
+					{kind: onyx.Button, content: "Hint", onclick: "giveHint"},
+					{kind: onyx.Button, content: "Reset", onclick: "restart"},
+					{kind: onyx.Button, content: "Next", onclick: "nextTweet"}
+				]}
 		]},
 		// these all use the automatic name feature since they're unique kinds
 		{ kind: enyo.Scroller, fit: true, components: [

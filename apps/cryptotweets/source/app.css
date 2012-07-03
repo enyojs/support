@@ -68,3 +68,7 @@ body {
 .distroLetter:last-child:after {
 	content: "";
 }
+
+.toolbar-fixed-width > .onyx-button {
+	width: 80px;
+}
