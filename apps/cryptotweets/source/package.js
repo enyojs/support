@@ -7,5 +7,6 @@
 	"Cell.js",
 	"Distribution.js",
 	"Cryptogram.js",
+	"PickLetter.js",
 	"App.js"
 );

@@ -24,59 +24,6 @@
  */
 
 enyo.kind({
-	name: "PickLetterPopup",
-	kind: onyx.Popup,
-	centered: true,
-	modal: true,
-	floating: true,
-	style: "padding: 10px; font-size: 30px;",
-	handlers: {
-		onkeypress: "keypress"
-	},
-	show: function(cypherLetter) {
-		this.cypherLetter = cypherLetter;
-		this.setContent(this.cypherLetter + " " + Unicode.rightwardArrow + " ?");
-		this.guessed = false;
-		this.inherited(arguments);
-	},
-	keypress: function(inSender, inEvent) {
-		var key = String.fromCharCode(inEvent.charCode).toUpperCase();
-		// after guess, letters restart guess to allow quick entry, otherwise ignore
-		if (this.guessed) {
-			if (key >= "A" && key <= "Z") {
-				enyo.job.stop("clearGuessPopup");
-				this.bubble("onStartGuess", { cypher: key });
-			}
-			return true;
-		}
-		// allow backspace or space to clear a cell
-		if (inEvent.charCode === 8 || inEvent.charCode === 32) {
-			this.setContent(this.cypherLetter + " " + Unicode.rightwardArrow +
-				" " + Unicode.nbsp);
-			this.guessed = true;
-			enyo.job("clearGuessPopup", enyo.bind(this, this.hide), 1000);
-			this.bubble("onFinishGuess", {
-				cypher: this.cypherLetter,
-				guess: null
-			});
-			return true;
-		}
-		// otherwise, accept letter as guess
-		if (key >= "A" && key <= "Z") {
-			this.setContent(this.cypherLetter + " " + Unicode.rightwardArrow +
-				" " + key);
-			this.guessed = true;
-			enyo.job("clearGuessPopup", enyo.bind(this, this.hide), 1000);
-			this.bubble("onFinishGuess", {
-				cypher: this.cypherLetter,
-				guess: key
-			});
-			return true;
-		}
-	}
-});
-
-enyo.kind({
 	name: "FetchPopup",
 	kind: onyx.Popup,
 	autoDismiss: false,
