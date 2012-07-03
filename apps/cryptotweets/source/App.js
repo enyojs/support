@@ -68,7 +68,7 @@ enyo.kind({
 		{ kind: onyx.MoreToolbar, style: "background: #444F70;", 
 			movedClass: "toolbar-fixed-width",
 			components: [
-				{ content: "CryptoTweets", style: "padding-right: 100px" },
+				{ content: "CryptoTweets", style: "padding-right: 10px" },
 				{ kind: enyo.Group, highlander: false, components: [
 					{kind: onyx.Button, content: "Hint", onclick: "giveHint"},
 					{kind: onyx.Button, content: "Reset", onclick: "restart"},
