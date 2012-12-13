@@ -33,11 +33,11 @@ enyo.kind({
 	scrim: true,
 	style: "padding: 10px; background: #444F70;",
 	events: {
-		onFetchTweets: "", 
+		onFetchTweets: "",
 		onFetchNews: ""
 	},
 	components: [
-		{ content: "Choose Game Type", 
+		{ content: "Choose Game Type",
 			style: "text-align: center; margin-bottom: 10px;" },
 		{ kind: onyx.Button, style: "margin-right: 10px", content: "Twitter",
 			ontap: "handleFetchTweets" },
@@ -65,7 +65,7 @@ enyo.kind({
 		{ kind: enyo.Signals,
 			onkeypress: "handleKeyPress",
 			onkeydown: "handleKeyDown" },
-		{ kind: onyx.MoreToolbar, style: "background: #444F70;", 
+		{ kind: onyx.MoreToolbar, style: "background: #444F70;",
 			movedClass: "toolbar-fixed-width",
 			components: [
 				{ content: "CryptoTweets", style: "padding-right: 10px" },
@@ -104,7 +104,7 @@ enyo.kind({
 	},
 	fetchNews: function(inSender) {
 		var request = new enyo.JsonpRequest({
-			url: "http://api.usatoday.com/open/articles/topnews",
+			url: "http://api.usatoday.com/open/articles/topnews/home",
 			callbackName: "jsoncallbackmethod"
 		});
 		request.response(enyo.bind(this, "handleUSATodayResults"));
