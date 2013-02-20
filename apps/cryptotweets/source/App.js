@@ -99,7 +99,7 @@ enyo.kind({
 		});
 		request.response(enyo.bind(this, "handleTwitterResults"));
 		request.go({
-			q: "from:TopTweets -filter:links"
+			q: "enyojs -filter:links"
 		});
 	},
 	fetchNews: function(inSender) {
