@@ -32,4 +32,4 @@ enyo.kind({
 		this.setDetails(inItem.Address);
 		this.openAt(inTop, inLeft);
 	}
-})
+});

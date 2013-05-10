@@ -53,10 +53,12 @@ enyo.kind({
 	},
 	openInfobox: function(e) {
 		var pix = this.$.map.hasMap().tryLocationToPixel(e.target.getLocation(), Microsoft.Maps.PixelReference.control);
-		e.originalEvent && e.originalEvent.stopPropagation && e.originalEvent.stopPropagation();
+		if (e.originalEvent && e.originalEvent.stopPropagation) {
+			e.originalEvent.stopPropagation();
+		}
 		this.$.infobox.openWithItem(e.target.item, pix.y, pix.x + 18);
 	},
-	dropPin: function(inSender, inEvent) { 
+	dropPin: function(inSender, inEvent) {
 		var map = this.$.map.hasMap();
 		if (!map) return;
 		var loc = map.getCenter();
@@ -101,13 +103,15 @@ enyo.kind({
 	},
 	searchResults: function(inSender, inResponse) {
 		var r = inResponse.results;
-		for (var i=0, item; item=r[i]; i++) {
+		for (var i=0, item; (item=r[i]); i++) {
 			var p = this.$.map.createPushpin(item.Latitude, item.Longitude, {
 				icon: "images/poi_search.png", height: 48, width: 48, text: String(i+1),
 				textOffset: new Microsoft.Maps.Point(0, 7)});
 			p.item = item;
 			Microsoft.Maps.Events.addHandler(p, 'mouseup', enyo.bind(this, "openInfobox"));
-			!i && this.$.map.setCenter(item.Latitude, item.Longitude);
+			if (!i) {
+				this.$.map.setCenter(item.Latitude, item.Longitude);
+			}
 		}
 	}
 });

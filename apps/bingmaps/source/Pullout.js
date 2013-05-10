@@ -40,7 +40,7 @@ enyo.kind({
 	],
 	max: 100,
 	value: 100,
-	unit: "%", 
+	unit: "%",
 	toggle: function(inPanelName) {
 		var t = this.$[inPanelName];
 		if (t.showing && this.isAtMin()) {

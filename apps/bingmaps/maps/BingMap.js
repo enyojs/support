@@ -4,11 +4,11 @@ A map control which is a wrapper around Bing map control.
 To initialize a Map control:
 
 	{name: "map", kind: "BingMap", credentials: "my_bing_app_id"}
-	
+
 You can get a handle to the actual Bing map control uisng hasMap(), like this:
 
 	var bingMap = this.$.map.hasMap();
-	
+
 */
 enyo.kind({
 	name: "enyo.BingMap",
@@ -139,7 +139,7 @@ enyo.kind({
 				this.pin.setLocation(this.centerLoc);
 			} else {
 				this.pin = new Microsoft.Maps.Pushpin(this.centerLoc, {draggable: true});
-				this.pinClickEvent = Microsoft.Maps.Events.addHandler(this.pin, 'click', enyo.bind(this, "pinClick")); 
+				this.pinClickEvent = Microsoft.Maps.Events.addHandler(this.pin, 'click', enyo.bind(this, "pinClick"));
 				this.pin.setOptions({icon: enyo.path.rewrite("$maps/") + "images/poi_precise_location.png"});
 			}
 			this.map.entities.push(this.pin);
