@@ -1,5 +1,5 @@
 enyo.kind({
-	name:"Audio",
+	name:"GameAudio",
 	kind:"Control",
 	published: {
 		src: ""
@@ -19,7 +19,7 @@ enyo.kind({
 		if (srcs && !enyo.isArray(srcs)) {
 			srcs = [srcs];
 		}
-		for (var i = 0, s; s = srcs[i]; i++) {
+		for (var i = 0, s; (s = srcs[i]); i++) {
 			var type = s.replace(/[^.]*./,"");
 			var mime = {mp3:"audio/mpeg", ogg:"audio/ogg", wav:"audio/wav"}[type];
 			a.createComponent({tag:"source", src:s, attributes:{type:mime}, owner:this});

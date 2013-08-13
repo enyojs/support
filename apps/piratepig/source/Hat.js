@@ -53,7 +53,8 @@ enyo.kind({
 				this.dx--;
 				var lerp = enyo.easing.cubicIn(this.dx/this.steps) * this.steps;
 				this.hat.bounds.l = this.l - lerp*inDx*4;
-				return (this.hat.animating = Boolean(this.dx >= 0));
+				this.hat.animating = Boolean(this.dx >= 0);
+				return this.hat.animating;
 			}
 		};
 	},
@@ -71,7 +72,8 @@ enyo.kind({
 				this.dy--;
 				var lerp = enyo.easing.cubicIn(this.dy/this.steps) * this.steps;
 				this.hat.bounds.t = this.t - lerp*inDy*4;
-				return (this.hat.animating = Boolean(this.dy >= 0));
+				this.hat.animating = Boolean(this.dy >= 0);
+				return this.hat.animating;
 			}
 		};
 	},

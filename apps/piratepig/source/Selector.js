@@ -14,7 +14,7 @@ enyo.kind({
 		this.bounds.w = this.size / 2;
 	},
 	show: function (inHatRow, inHatCol) {
-		this.bounds.l = this.bounds.w + (this.size + this.margin) * inHatRow
+		this.bounds.l = this.bounds.w + (this.size + this.margin) * inHatRow;
 		this.bounds.t = this.bounds.w + (this.size + this.margin) * inHatCol;
 	},
 	hide: function() {

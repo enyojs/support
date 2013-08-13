@@ -19,11 +19,11 @@ enyo.kind({
 		]},
 		// why can't there just be one standard that isn't wav?
 		{name:"sounds", style:"display: none;", components:[
-			{name:"three", kind:"Audio", src:["sounds/3.ogg", "sounds/3.mp3", "sounds/3.wav"], onEnded: "endedHandler"},
-			{name:"four", kind:"Audio", src:["sounds/4.ogg", "sounds/4.mp3", "sounds/4.wav"], onEnded: "endedHandler"},
-			{name:"fiveplus", kind:"Audio", src:["sounds/5.ogg", "sounds/5.mp3", "sounds/5.wav"], onEnded: "endedHandler"},
-			{name:"whiff", kind:"Audio", src:["sounds/whiff.ogg", "sounds/whiff.mp3", "sounds/whiff.wav"], onEnded:"endedHandler"},
-			{name:"theme", kind:"Audio", src:["sounds/theme.ogg", "sounds/theme.mp3", "sounds/theme.wav"], onEnded:"endedHandler"}
+			{name:"three", kind:"GameAudio", src:["sounds/3.ogg", "sounds/3.mp3", "sounds/3.wav"], onEnded: "endedHandler"},
+			{name:"four", kind:"GameAudio", src:["sounds/4.ogg", "sounds/4.mp3", "sounds/4.wav"], onEnded: "endedHandler"},
+			{name:"fiveplus", kind:"GameAudio", src:["sounds/5.ogg", "sounds/5.mp3", "sounds/5.wav"], onEnded: "endedHandler"},
+			{name:"whiff", kind:"GameAudio", src:["sounds/whiff.ogg", "sounds/whiff.mp3", "sounds/whiff.wav"], onEnded:"endedHandler"},
+			{name:"theme", kind:"GameAudio", src:["sounds/theme.ogg", "sounds/theme.mp3", "sounds/theme.wav"], onEnded:"endedHandler"}
 		]},
 		{name:"title", classes:"hcenter banner", components:[
 			{name:"score", classes:"score", content:"0"},
@@ -64,6 +64,7 @@ enyo.kind({
 		var b = this.getBounds();
 		var h = b.height;
 		var w = b.width;
+		var i, c;
 		if (w < this.rows * 36 || h < (this.rows+1) * 36) {
 			this.hatsize = 28;
 			this.hatmargin = 4;
@@ -86,13 +87,13 @@ enyo.kind({
 		this.$.selector.setSize(this.hatsize);
 		this.$.selector.setMargin(this.hatmargin);
 		var hc = this.$.hatbox.getClientControls();
-		for (var i = 0, h; h = hc[i]; i++) {
+		for (i = 0; (h = hc[i]); i++) {
 			h.setSize(this.hatsize);
 			h.setMargin(this.hatmargin);
 			h.iChanged();
 			h.jChanged();
 		}
-		for (var i = 0, c; c = ["background", "select", "hat"][i]; i++) {
+		for (i = 0; (c = ["background", "select", "hat"][i]); i++) {
 			this.$[c+"box"].setAttribute("width", s);
 			this.$[c+"box"].setAttribute("height", s);
 			this.$[c+"box"].update();
@@ -171,7 +172,7 @@ enyo.kind({
 				matches = this.exchange(this.selected, oh);
 			}
 			// don't play sound if you tap the selected square again
-			if (md != 0) {
+			if (md !== 0) {
 				this.playSound(matches, true);
 			}
 			this.selected = null;
@@ -205,8 +206,8 @@ enyo.kind({
 	checkMatches: function() {
 		var matches = [];
 		this._checkMatches(
-			enyo.bind(this,"get"),
-			enyo.bind(this,"make"),
+			enyo.bind(this,"fget"),
+			enyo.bind(this,"fmake"),
 			matches
 		);
 		this._checkMatches(
@@ -216,13 +217,13 @@ enyo.kind({
 		);
 		return matches;
 	},
-	get: function(a,b) {
+	fget: function(a,b) {
 		return this.map[a][b].type;
 	},
 	rget: function(a,b) {
 		return this.map[b][a].type;
 	},
-	make: function(a,b) {
+	fmake: function(a,b) {
 		return {i:a,j:b};
 	},
 	rmake: function(a,b) {
@@ -237,7 +238,7 @@ enyo.kind({
 				if (t == -1) {
 					t = tt;
 					continue;
-				} 
+				}
 				if (tt == t) {
 					c++;
 				}
@@ -259,7 +260,7 @@ enyo.kind({
 		}
 	},
 	splatMatches: function(inMatches) {
-		for (var i=0, m; m=inMatches[i]; i++) {
+		for (var i=0, m; (m=inMatches[i]); i++) {
 			this.splat(m.i, m.j);
 		}
 		if (inMatches.length) {
@@ -273,7 +274,7 @@ enyo.kind({
 			return;
 		}
 		this.map[hat0.i][hat0.j] = null;
-		for (var i=hat0.i, j=hat0.j-1; j>=0; j--) {
+		for (i=hat0.i, j=hat0.j-1; j>=0; j--) {
 			var hat = this.map[i][j];
 			if (hat) {
 				this.map[i][j] = null;
@@ -287,18 +288,18 @@ enyo.kind({
 	},
 	heartbeat: function() {
 		if (this.moves.length) {
-			var live = [];
-			for (var i = 0, m; m = this.moves[i]; i++) {
+			var live = [], i, m;
+			for (i = 0; (m = this.moves[i]); i++) {
 				if (m.move()) {
 					live.push(m);
 				}
 			}
 			this.moves = live;
-			if (this.moves.length == 0) {
+			if (this.moves.length === 0) {
 				this.splatMatches(this.checkMatches());
 				// stabilze board
 				var hc = this.$.hatbox.getClientControls();
-				for (var i = 0, h; h = hc[i]; i++) {
+				for (i = 0, h; (h = hc[i]); i++) {
 					h.iChanged();
 					h.jChanged();
 				}
@@ -307,7 +308,7 @@ enyo.kind({
 		}
 	},
 	newHat: function(i,j) {
-		var type = this.getType()
+		var type = this.getType();
 		var image = this.getImage(type);
 		return this.$.hatbox.createComponent({kind: "Hat", i: i, j: j, owner: this, image:image, type:type, bounds:{}, size:this.hatsize, margin:this.hatmargin});
 	},
