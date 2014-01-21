@@ -1,4 +1,4 @@
-![CryptoTweets icon](https://github.com/enyojs/support/raw/master/apps/cryptotweets/icon_64x64.png)
+![CryptoNews icon](https://github.com/enyojs/support/raw/master/apps/cryptotweets/icon_64x64.png)
 
 This is a simple cryptogram game written in the enyojs project's Enyo + Onyx +
 Layout client-side JavaScript libraries.
@@ -12,7 +12,7 @@ cells use that event to decide if they should change their CSS class.  I also
 use a "startGuess" event to let you trigger guesses either by tapping on a
 cell or by hitting a key on the keyboard.
 
-Let me know what you think!  
+Let me know what you think!
 
 ## LICENSE
 
@@ -22,5 +22,5 @@ Enyo project.
 ## TODOs for CryptoTweets
 
 * Wrap cypher display at word boundaries
-* Add toggle button to turn statistics display on/off or 
+* Add toggle button to turn statistics display on/off or
   make statistics a slidable

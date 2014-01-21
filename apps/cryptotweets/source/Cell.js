@@ -17,6 +17,10 @@ enyo.kind({
 		{ name: "middle", classes: "middle", content: Unicode.nbsp },
 		{ name: "bottom", classes: "bottom" }
 	],
+	bindings: [
+		{ from: ".top", to: ".$.top.content", transform: "xfrmBlankToNBSP" },
+		{ from: ".bottom", to: ".$.bottom.content", transform: "xfrmBlankToNBSP" }
+	],
 	handlers: {
 		onGuess: "guess",
 		onResetGuess: "reset",
@@ -27,9 +31,7 @@ enyo.kind({
 	create: function () {
 		this.inherited(arguments);
 		this.encryptedChanged();
-		this.topChanged();
 		this.mutableChanged();
-		this.bottomChanged();
 	},
 	reset: function () {
 		// go back to "unguessed" state
@@ -53,11 +55,8 @@ enyo.kind({
 	mutableChanged: function() {
 		this.updateMiddle();
 	},
-	topChanged: function() {
-		this.$.top.setContent(this.top || Unicode.nbsp);
-	},
-	bottomChanged: function() {
-		this.$.bottom.setContent(this.bottom || Unicode.nbsp);
+	xfrmBlankToNBSP: function(str) {
+		return str || Unicode.nbsp;
 	},
 	guess: function(inSender, inEvent) {
 		if (this.mutable) {

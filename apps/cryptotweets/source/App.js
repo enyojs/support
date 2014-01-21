@@ -24,51 +24,26 @@
  */
 
 enyo.kind({
-	name: "FetchPopup",
-	kind: onyx.Popup,
-	autoDismiss: false,
-	centered: true,
-	modal: true,
-	floating: true,
-	scrim: true,
-	style: "padding: 10px; background: #444F70;",
-	events: {
-		onFetchTweets: "",
-		onFetchNews: ""
-	},
-	components: [
-		{ content: "Choose Game Type",
-			style: "text-align: center; margin-bottom: 10px;" },
-		{ kind: onyx.Button, style: "margin-right: 10px", content: "Twitter",
-			ontap: "handleFetchTweets" },
-		{ kind: onyx.Button, content: "USA Today", ontap: "handleFetchNews" }
-	],
-	handleFetchTweets: function() {
-		this.doFetchTweets();
-		this.hide();
-	},
-	handleFetchNews: function() {
-		this.doFetchNews();
-		this.hide();
-	}
+	name: "App",
+	kind: enyo.Application,
+	view: "MainView"
 });
 
 enyo.kind({
-	name: "App",
+	name: "MainView",
 	kind: enyo.FittableRows,
 	classes: "onyx",
 	handlers: {
 		onStartGuess: "startGuess",
-		onFinishGuess: "finishGuess"
+		onFinishGuess: "finishGuess",
+		onkeypress: "handleKeyPress",
+		onkeydown: "handleKeyDown"
 	},
 	components: [
-		{ kind: enyo.Signals,
-			onkeypress: "handleKeyPress",
-			onkeydown: "handleKeyDown" },
 		{ kind: onyx.MoreToolbar, style: "background: #444F70;",
 			movedClass: "toolbar-fixed-width",
 			components: [
-				{ content: "CryptoTweets", style: "padding-right: 10px" },
+				{ content: "CryptoNews (powered by USA Today)", style: "padding-right: 10px" },
 				{ kind: enyo.Group, highlander: false, components: [
 					{kind: onyx.Button, content: "Hint", onclick: "giveHint"},
 					{kind: onyx.Button, content: "Reset", onclick: "restart"},
@@ -79,8 +54,10 @@ enyo.kind({
 		{ kind: enyo.Scroller, fit: true, components: [
 			{ kind: Cryptogram }
 		]},
-		{ kind: FetchPopup, onFetchTweets: "fetchTweets", onFetchNews: "fetchNews"},
-		{ kind: PickLetterPopup }
+		{ kind: PickLetterPopup },
+		{ kind: "onyx.Popup", name: "loadingPopup", centered: true, modal: true, floating: true, components: [
+			{ content: "Loading headlines..." }
+		]}
 	],
 	create: function() {
 		this.inherited(arguments);
@@ -89,20 +66,10 @@ enyo.kind({
 	},
 	rendered: function() {
 		this.inherited(arguments);
-		// show selection popup
-		this.$.fetchPopup.show();
-	},
-	fetchTweets: function(inSender) {
-		var request = new enyo.JsonpRequest({
-			url: "http://search.twitter.com/search.json",
-			callbackName: "callback"
-		});
-		request.response(enyo.bind(this, "handleTwitterResults"));
-		request.go({
-			q: "enyojs -filter:links"
-		});
+		this.fetchNews();
 	},
 	fetchNews: function(inSender) {
+		this.$.loadingPopup.show();
 		var request = new enyo.JsonpRequest({
 			url: "http://api.usatoday.com/open/articles/topnews/home",
 			callbackName: "jsoncallbackmethod"
@@ -114,15 +81,8 @@ enyo.kind({
 			count: 15
 		});
 	},
-	handleTwitterResults: function(inRequest, inResponse) {
-		this.tweets = [];
-		enyo.forEach(inResponse.results, function(t) {
-			this.tweets.push(t.text);
-		}, this);
-		this.nextTweetIndex = 0;
-		this.nextTweet();
-	},
 	handleUSATodayResults: function(inRequest, inResponse) {
+		this.$.loadingPopup.hide();
 		this.tweets = [];
 		enyo.forEach(inResponse.stories, function(t) {
 			this.tweets.push(t.title);
@@ -165,4 +125,8 @@ enyo.kind({
 	finishGuess: function(inSender, inEvent) {
 		this.$.cryptogram.guessLetter(inEvent.cypher, inEvent.guess, false);
 	}
+});
+
+enyo.ready(function() {
+	new App();
 });

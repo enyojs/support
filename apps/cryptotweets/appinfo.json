@@ -1,9 +1,9 @@
 {
-	"id": "com.enyojs.sample.cryptograms",
+	"id": "com.enyojs.sample.cryptonews",
 	"version": "0.1.0",
-	"vendor": "HP Enyo JS Framework",
+	"vendor": "Enyo JS Framework",
 	"type": "web",
 	"main": "index.html",
-	"title": "CryptoTweets",
+	"title": "CryptoNews",
 	"icon": "icon_48x48.png"
 }

@@ -5,7 +5,7 @@ enyo.kind({
 	allowHtml: true,
 	classes: "cryptogram",
 	components: [
-		{ name: "cells", kind: enyo.Repeater, onSetupItem: "setupCell", 
+		{ name: "cells", kind: enyo.Repeater, onSetupItem: "setupCell",
 			components: [ { kind: Cell } ] },
 		{ tag: "br", attributes: { clear: "all" } },
 		{ kind: Distribution }

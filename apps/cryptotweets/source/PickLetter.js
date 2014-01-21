@@ -13,7 +13,7 @@ enyo.kind({
 	components: [
 		{ name: "prompt", style: "font-size: 30px; padding-bottom: 6px; text-align: center;" },
 		{ name: "keyboard", kind: enyo.Repeater, count: 26, onSetupItem: "setupKeys",
-			components: [ { kind: onyx.Button, ontap: "tappedKeys", 
+			components: [ { kind: onyx.Button, ontap: "tappedKeys",
 				style: "margin: 3px 3px; width: 36px; font-size: 14px; padding: 6px 10px;" } ] }
 	],
 	setupKeys: function(inSender, inEvent) {
@@ -29,7 +29,7 @@ enyo.kind({
 		return true;
 	},
 	setPrompt: function(guess) {
-		this.$.prompt.setContent(this.cypherLetter + " " + 
+		this.$.prompt.setContent(this.cypherLetter + " " +
 			Unicode.rightwardArrow + " " + guess);
 	},
 	show: function(cypherLetter) {
